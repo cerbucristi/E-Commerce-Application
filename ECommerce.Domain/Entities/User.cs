@@ -20,7 +20,6 @@ namespace ECommerce.Domain.Entities
 
         public static Result<User> Create(string username, string email, string password)
         {
-            // You can add additional validation here if needed.
             return Result<User>.Success(new User(username, email, password));
         }
     }

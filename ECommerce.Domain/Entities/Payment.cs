@@ -11,7 +11,7 @@ namespace ECommerce.Domain.Entities
             OrderId = orderId;
             PaymentMethod = paymentMethod;
             PaymentAmount = paymentAmount;
-            PaymentStatus = "Pending"; // You can use an enum or more detailed status if needed
+            PaymentStatus = "Pending"; //we ll add some enum
         }
 
         public Guid PaymentId { get; private set; }
@@ -22,7 +22,6 @@ namespace ECommerce.Domain.Entities
 
         public static Result<Payment> Create(Guid orderId, string paymentMethod, decimal paymentAmount)
         {
-            // You can add additional validation here if needed.
             return Result<Payment>.Success(new Payment(orderId, paymentMethod, paymentAmount));
         }
     }

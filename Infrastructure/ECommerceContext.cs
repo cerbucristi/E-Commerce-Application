@@ -17,14 +17,10 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=(lCocaldb)\\MSSQLLocalDB;Database=ECommerceDB;Trusted_Connection=True;");
 
             optionsBuilder.UseNpgsql("Server=localhost; Port=5433; Database=ECommerceDB; User Id=postgres; Password=postgresql");
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlite("Data Source=ECommerceDB.db");
-        //}
+  
     
     }
 }

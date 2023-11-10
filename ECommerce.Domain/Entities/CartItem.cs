@@ -18,7 +18,6 @@ namespace ECommerce.Domain.Entities
 
         public static CartItem Create(Guid productId, int quantity)
         {
-            // You can add additional validation here if needed.
             return new CartItem(productId, quantity);
         }
     }

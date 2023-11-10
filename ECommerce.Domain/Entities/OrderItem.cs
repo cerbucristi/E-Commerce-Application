@@ -20,7 +20,6 @@ namespace ECommerce.Domain.Entities
 
         public static OrderItem Create(Guid productId, int quantity, decimal price)
         {
-            // You can add additional validation here if needed.
             return new OrderItem(productId, quantity, price);
         }
 

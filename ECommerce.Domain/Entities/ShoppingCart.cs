@@ -19,7 +19,6 @@ namespace ECommerce.Domain.Entities
 
         public static Result<ShoppingCart> Create(Guid customerId)
         {
-            // You can add additional validation here if needed.
             return Result<ShoppingCart>.Success(new ShoppingCart(customerId));
         }
 

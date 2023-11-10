@@ -11,7 +11,7 @@ namespace ECommerce.Domain.Entities
             OrderId = Guid.NewGuid();
             CustomerId = customerId;
             OrderDate = DateTime.UtcNow;
-            OrderStatus = "Pending"; // You can use an enum or more detailed status if needed
+            OrderStatus = "Pending"; //vom folosi enum or smth
             OrderItems = new List<OrderItem>();
         }
 
@@ -24,7 +24,6 @@ namespace ECommerce.Domain.Entities
 
         public static Result<Order> Create(Guid customerId)
         {
-            // You can add additional validation here if needed.
             return Result<Order>.Success(new Order(customerId));
         }
 
