@@ -21,7 +21,6 @@ namespace ECommerce.Domain.Entities
         public decimal Price { get; private set; }
         public int StockQuantity { get; private set; }
         public List<Category> Categories { get; private set; }
-        public List<Event> Events { get; private set; }
 
         public static Result<Product> Create(string productName, decimal price, int stockQuantity)
         {
@@ -41,15 +40,6 @@ namespace ECommerce.Domain.Entities
         {
             Categories.Add(category);
             category.AttachProduct(this);
-        }
-
-        public void AttachEvent(Event eventItem)
-        {
-            if (Events == null)
-            {
-                Events = new List<Event>();
-            }
-            Events.Add(eventItem);
         }
     }
 }

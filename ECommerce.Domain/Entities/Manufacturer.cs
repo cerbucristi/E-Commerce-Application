@@ -16,7 +16,6 @@ namespace ECommerce.Domain.Entities
         public Guid ManufacturerId { get; private set; }
         public string ManufacturerName { get; private set; }
         public List<Product> Products { get; private set; }
-        public List<Event> Events { get; private set; }
 
         public static Result<Manufacturer> Create(string manufacturerName)
         {
@@ -32,13 +31,5 @@ namespace ECommerce.Domain.Entities
             Products.Add(product);
         }
 
-        public void AttachEvent(Event eventItem)
-        {
-            if (Events == null)
-            {
-                Events = new List<Event>();
-            }
-            Events.Add(eventItem);
-        }
     }
 }

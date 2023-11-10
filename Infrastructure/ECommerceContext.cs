@@ -5,7 +5,6 @@ namespace Infrastructure
 {
     public class ECommerceContext : DbContext
     {
-        public DbSet<Event> Events { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }

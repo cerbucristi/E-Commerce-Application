@@ -12,7 +12,6 @@ namespace ECommerce.Domain.Entities
 
         public Guid CategoryId { get; private set; }
         public string CategoryName { get; private set; } = string.Empty;
-        public List<Event>? Events { get; private set; }
         public List<Product>? Products { get; private set; }
 
         public static Result<Category> Create(string categoryName)
@@ -24,14 +23,6 @@ namespace ECommerce.Domain.Entities
             return Result<Category>.Success(new Category(categoryName));
         }
 
-        public void AttachEvent(Event eventItem)
-        {
-            if (Events == null)
-            {
-                Events = new List<Event>();
-            }
-            Events.Add(eventItem);
-        }
 
         public void AttachProduct(Product productItem)
         {
