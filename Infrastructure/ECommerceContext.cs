@@ -13,14 +13,9 @@ namespace Infrastructure
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<User> Users { get; set; }
+        public ECommerceContext(DbContextOptions<ECommerceContext> options) : base(options) { }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-
-            optionsBuilder.UseNpgsql("Server=localhost; Port=5432; Database=ECommerceDB; User Id=postgres; Password=postgresql");
-        }
-  
-    
     }
 }
+
+

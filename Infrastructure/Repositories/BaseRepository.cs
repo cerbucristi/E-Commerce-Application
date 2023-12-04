@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Contracts;
+﻿using ECommerce.Application.Persistence;
 using ECommerce.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +11,7 @@ namespace Infrastructure.Repositories
         public BaseRepository(ECommerceContext context)
         {
             this.context = context;
-            if (!this.context.Database.EnsureCreated()) {
-                this.context.Database.Migrate();
-            }
+            
         }
         public async Task<Result<T>> AddAsync(T entity)
         {
@@ -43,6 +41,12 @@ namespace Infrastructure.Repositories
                 return Result<T>.Failure($"Entity with {id} not found");
             }
             return Result<T>.Success(result);
+        }
+
+        public virtual async Task<Result<IReadOnlyList<T>>> GetAllAsync()
+        {
+            var result = await context.Set<T>().AsNoTracking().ToListAsync();
+            return Result<IReadOnlyList<T>>.Success(result);
         }
 
         public async Task<Result<IReadOnlyList<T>>> GetPagedReponseAsync(int page, int size)

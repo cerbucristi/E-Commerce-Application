@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20231109222443_first_iteration_of_entities")]
-    partial class first_iteration_of_entities
+    [Migration("20231130143247_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -99,63 +99,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("ECommerce.Domain.Entities.Event", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Artist")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("EventDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EventName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("ManufacturerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("EventId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ManufacturerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Manufacturer", b =>
@@ -455,23 +398,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ShoppingCartId");
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.Event", b =>
-                {
-                    b.HasOne("ECommerce.Domain.Entities.Category", null)
-                        .WithMany("Events")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerce.Domain.Entities.Manufacturer", null)
-                        .WithMany("Events")
-                        .HasForeignKey("ManufacturerId");
-
-                    b.HasOne("ECommerce.Domain.Entities.Product", null)
-                        .WithMany("Events")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("ECommerce.Domain.Entities.OrderItem", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.Order", null)
@@ -495,15 +421,8 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ManufacturerId");
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("Events");
-                });
-
             modelBuilder.Entity("ECommerce.Domain.Entities.Manufacturer", b =>
                 {
-                    b.Navigation("Events");
-
                     b.Navigation("Products");
                 });
 
@@ -512,11 +431,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("ECommerce.Domain.Entities.Product", b =>
-                {
-                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.ShoppingCart", b =>

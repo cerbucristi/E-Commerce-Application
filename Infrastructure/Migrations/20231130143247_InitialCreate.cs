@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class first_iteration_of_entities : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -234,46 +235,6 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    EventId = table.Column<Guid>(type: "uuid", nullable: false),
-                    EventName = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false),
-                    Artist = table.Column<string>(type: "text", nullable: true),
-                    EventDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ManufacturerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.EventId);
-                    table.ForeignKey(
-                        name: "FK_Events_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Manufacturers_ManufacturerId",
-                        column: x => x.ManufacturerId,
-                        principalTable: "Manufacturers",
-                        principalColumn: "ManufacturerId");
-                    table.ForeignKey(
-                        name: "FK_Events_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_CartItem_ShoppingCartId",
                 table: "CartItem",
@@ -283,21 +244,6 @@ namespace Infrastructure.Migrations
                 name: "IX_CategoryProduct_ProductsProductId",
                 table: "CategoryProduct",
                 column: "ProductsProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_CategoryId",
-                table: "Events",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_ManufacturerId",
-                table: "Events",
-                column: "ManufacturerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Events_ProductId",
-                table: "Events",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_OrderId",
@@ -323,9 +269,6 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "CategoryProduct");
-
-            migrationBuilder.DropTable(
-                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
