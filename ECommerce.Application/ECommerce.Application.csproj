@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Manufacturers\NewFolder\**" />
+    <EmbeddedResource Remove="Features\Manufacturers\NewFolder\**" />
+    <None Remove="Features\Manufacturers\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ECommerce.Domain\ECommerce.Domain.csproj" />
   </ItemGroup>
 

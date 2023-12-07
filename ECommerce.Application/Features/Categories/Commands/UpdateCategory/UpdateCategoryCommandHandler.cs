@@ -35,7 +35,7 @@ namespace ECommerce.Application.Features.Events.Commands.UpdateCategory
             };
 
             @category.Value.Update(request.CategoryName);
-            await repository.UpdateAsync(category.Value);
+            await repository.UpdateAsync(@category.Value);
             return new UpdateCategoryViewModel
             {
                 Success = true,

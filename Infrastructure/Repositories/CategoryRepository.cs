@@ -11,14 +11,5 @@ namespace Infrastructure.Repositories
         {
             
         }
-   //     public override async Task<Result<Category>> FindByIdAsync(Guid id)
-     //   {
-      //      var result = await context.Categories.FirstOrDefaultAsync(c => c.CategoryId.Equals(id));   
-//if (result == null)
-         //   {
-         //       return Result<Category>.Failure($"Entity with id {id} not found");
-           // }
-            //return Result<Category>.Success(result);
-       // }
     }
 }

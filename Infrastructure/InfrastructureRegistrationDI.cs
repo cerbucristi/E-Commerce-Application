@@ -31,6 +31,7 @@ namespace Infrastructure
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
             services.AddScoped<ICategoryRepository,CategoryRepository>();
+            services.AddScoped<IManufacturerRepository,ManufacturerRepository>();
 
             return services;
         }
