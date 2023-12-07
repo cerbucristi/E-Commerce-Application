@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using ECommerce.Application.Features.Events.Commands.DeleteCategory;
 using ECommerce.Application.Features.Categories.Commands.UpdateCategory;
 using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.API.Controllers
 {
+    [Authorize(Roles = "User")]
     public class CategoriesController : ApiControllerBase
     {
+     
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateCategoryCommand command)

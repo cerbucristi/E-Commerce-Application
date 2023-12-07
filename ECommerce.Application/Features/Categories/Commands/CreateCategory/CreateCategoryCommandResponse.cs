@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Responses;
+using ECommerce.Domain.Entities;
 
 namespace ECommerce.Application.Features.Categories.Commands.CreateCategory
 {
