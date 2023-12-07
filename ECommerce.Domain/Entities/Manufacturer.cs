@@ -13,7 +13,7 @@ namespace ECommerce.Domain.Entities
 
         public Guid ManufacturerId { get; private set; }
         public string ManufacturerName { get; private set; }
-        public List<Product> Products { get; private set; }
+        public List<Product>? Products { get; private set; }
 
         public static Result<Manufacturer> Create(string manufacturerName)
         {
