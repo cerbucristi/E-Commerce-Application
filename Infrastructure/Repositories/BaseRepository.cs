@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories
 {
     public class BaseRepository<T> : IAsyncRepository<T> where T : class
     {
-        private readonly ECommerceContext context;
+        protected readonly ECommerceContext context;
 
         public BaseRepository(ECommerceContext context)
         {
@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
             return Result<T>.Success(result.Value);
         }
 
-        public async Task<Result<T>> FindByIdAsync(Guid id)
+        public virtual async Task<Result<T>> FindByIdAsync(Guid id)
         {
             var result = await context.Set<T>().FindAsync(id);
 

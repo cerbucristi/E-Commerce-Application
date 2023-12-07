@@ -5,6 +5,8 @@ using ECommerce.Application.Features.Categories.Queries.GetById;
 
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.Application.Features.Events.Commands.DeleteCategory;
+using ECommerce.Application.Features.Categories.Commands.UpdateCategory;
+using ECommerce.Domain.Entities;
 
 namespace ECommerce.API.Controllers
 {
@@ -45,6 +47,27 @@ namespace ECommerce.API.Controllers
         {
             var deleteCategoryCommand = new DeleteCategoryCommand() { CategoryId = id };
             await Mediator.Send(deleteCategoryCommand);
+            return NoContent();
+        }
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Update(Guid id, UpdateCategoryCommand command)
+        {
+            if (id != command.CategoryId)
+            {
+                return BadRequest("ID mismatch between route parameter and request body.");
+            }
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
             return NoContent();
         }
     }

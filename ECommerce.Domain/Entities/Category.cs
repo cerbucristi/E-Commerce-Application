@@ -23,6 +23,10 @@ namespace ECommerce.Domain.Entities
             return Result<Category>.Success(new Category(categoryName));
         }
 
+        public void Update(string categoryName)
+        {
+            CategoryName= categoryName;
+        }
 
         public void AttachProduct(Product productItem)
         {
