@@ -21,11 +21,11 @@ namespace ECommerce.Application.Features.Manufacturers.Commands.UpdateManufactur
         {
             var validator = new UpdateManufacturerCommandValidator(repository);
             var result = await validator.ValidateAsync(request, cancellationToken);
-            if(result.IsValid)
+            if(!result.IsValid)
             {
                 return new UpdateManufacturerViewModel
                 {
-                    Success = true,
+                    Success = false,
                     ValidationsErrors = result.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
