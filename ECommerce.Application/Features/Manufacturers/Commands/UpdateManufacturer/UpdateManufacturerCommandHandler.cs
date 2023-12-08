@@ -35,7 +35,7 @@ namespace ECommerce.Application.Features.Manufacturers.Commands.UpdateManufactur
                 return new UpdateManufacturerViewModel
                 {
                     Success = false,
-                    ValidationsErrors = new List<string> { "Category not found" }
+                    ValidationsErrors = ["Manufacturer not found"]
                 };
             };
             @manufacturer.Value.Update(request.ManufacturerName);

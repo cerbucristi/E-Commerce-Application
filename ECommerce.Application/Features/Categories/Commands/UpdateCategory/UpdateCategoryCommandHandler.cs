@@ -30,7 +30,7 @@ namespace ECommerce.Application.Features.Events.Commands.UpdateCategory
                 return new UpdateCategoryViewModel
                 {
                     Success = false,
-                    ValidationsErrors = new List<string> { "Category not found" }
+                    ValidationsErrors = ["Category not found"]
                 };
             };
 

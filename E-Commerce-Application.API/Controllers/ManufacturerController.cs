@@ -5,10 +5,12 @@ using ECommerce.Application.Features.Manufacturers.Commands.UpdateManufacturer;
 using ECommerce.Application.Features.Manufacturers.Queries.GetAll;
 using ECommerce.Application.Features.Manufacturers.Queries.GetById;
 using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_Application.API.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ManufacturerController : ApiControllerBase
     {
         [HttpPost]
