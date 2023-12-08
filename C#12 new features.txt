@@ -1,0 +1,17 @@
+Constructori Primari:
+C# 12 introduce conceptul de constructori primari, care nu mai sunt restricționați la tipurile de înregistrare (record). Acum, aceștia pot fi utilizați în orice clasă sau structură. Parametrii constructorului primar sunt vizibili în întregul corp al clasei, asigurând că sunt asignați în mod clar. Aceasta adaugă claritate și consolidează inițializarea obiectelor, eliminând constructorul implicit fără parametri. În structuri, constructorul implicit pentru tipul de valoare initializează toți parametrii constructorului primar la 0.
+
+Expresii de Colectare:
+Expresiile de colectare introduc o sintaxă concisă pentru crearea valorilor comune de colecție. Această caracteristică permite încastrarea altor colecții în aceste valori prin utilizarea operatorului de propagare .... Astfel, se pot crea tipuri de colecție, precum array-uri, obiecte Span<T> sau liste generice, fără a depinde de suport extern. Această funcționalitate simplifică și îmbunătățește expresivitatea codului.
+
+Parametri ref readonly:
+Adăugarea parametrilor ref readonly aduce claritate în API-urile care folosesc parametri ref. Această caracteristică oferă posibilitatea de a folosi referințe doar pentru citire, fără a afecta variabilele originale. Acest lucru ajută la clarificarea API-urilor care pot folosi parametri ref sau in și sprijină codul clar și concis.
+
+Parametri Implicit Lambda:
+În C# 12, se poate defini acum valori implicite pentru parametrii lambda. Aceasta adaugă flexibilitate în scrierea codului și permite specificarea valorilor implicite în expresiile lambda, la fel cum se face în metodele tradiționale.
+
+Aliasuri pentru Orice Tip:
+Directiva using pentru aliasuri permite acum crearea de aliasuri pentru orice tip, nu doar pentru tipurile numite. Acest lucru permite crearea de aliasuri semantice pentru tipuri precum tuple, array-uri sau pointeri, îmbunătățind astfel claritatea și expresivitatea codului.
+
+Interceptoare (Experimental):
+Interceptoarele sunt o funcționalitate experimentală care poate înlocui declarativ apelurile către metode interceptabile cu apeluri la ele însele la momentul compilării. Aceasta furnizează o modalitate limitată de a schimba semantica codului existent, adăugând cod nou la o compilare existentă. Este important de menționat că această funcționalitate este în stadiu experimental și este recomandată exclusiv în scopuri de experimentare.
