@@ -1,0 +1,43 @@
+@page "/login"
+<div class="login-container">
+    <header class="login-header">
+        <h1 class="login-header-title">Log In</h1>
+    </header>
+    <form 
+        class="login-form" 
+        method="post" 
+        @onsubmit="SubmitLogin">
+        <InputText 
+            class="login-form-input" 
+            placeholder="E-Mail" 
+            @bind-Value="Model.Email" />
+        <InputText 
+            class="login-form-input" 
+            placeholder="Password" 
+            type="password"
+            @bind-Value="Model.Password" />
+        <button class="login-form-button">Login</button>
+    </form>
+    <span class="redirect-to-create-account">No account? <br> Click here to create one</span>
+</div>
+    <span>Email is: @Model.Email</span>
+    <span>Password is: @Model.Password</span>
+
+@code {
+    [SupplyParameterFromForm]
+    public LoginCredentials Model { get; set; }
+
+    protected override void OnInitialized() => Model = new();
+
+    public class LoginCredentials
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    
+    private void SubmitLogin()
+    {
+        System.Diagnostics.Debug.WriteLine(Model.Email);
+        System.Diagnostics.Debug.WriteLine(Model.Password);
+    }
+}
