@@ -65,6 +65,10 @@ builder.Services.AddSwaggerGen(c =>
 
     c.OperationFilter<FileResultContentTypeOperationFilter>();
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Open", b => b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
 var app = builder.Build();
 
