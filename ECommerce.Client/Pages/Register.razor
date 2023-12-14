@@ -1,0 +1,58 @@
+@page "/register"
+<div class="login-container">
+    <header class="login-header">
+        <h1 class="login-header-title">Register</h1>
+    </header>
+    <form
+        class="login-form"
+        method="post"
+        @onsubmit="SubmitRegisterUser">
+        <InputText
+            class="login-form-input"
+            placeholder="E-Mail"
+            @bind-Value="Model.Email"/>
+        <InputText
+            class="login-form-input"
+            placeholder="Username"
+            @bind-Value="Model.Username"/>
+        <InputText
+            class="login-form-input"
+            placeholder="Password"
+            type="password"
+            @bind-Value="Model.Password"/>
+        <InputText
+            class="login-form-input"
+            placeholder="Re-type Password"
+            type="password"
+            @bind-Value="Model.PasswordCheck"/>
+        <button class="login-form-button">Register</button>
+    </form>
+    <span class="redirect-to-create-account">Already have an account? <br> Click here to login</span>
+</div>
+
+@* To be deleted *@
+<span>Email is: @Model.Email</span>
+<span>Username is: @Model.Username</span>
+<span>Password is: @Model.Password</span>
+<span>Password check is: @Model.PasswordCheck</span>
+
+@code {
+    [SupplyParameterFromForm] public RegisterViewModel Model { get; set; }
+
+    protected override void OnInitialized() => Model = new();
+
+    public class RegisterViewModel
+    {
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string PasswordCheck { get; set; }
+    }
+
+    private void SubmitRegisterUser()
+    {
+        System.Diagnostics.Debug.WriteLine(Model.Email);
+        System.Diagnostics.Debug.WriteLine(Model.Password);
+    }
+
+}
