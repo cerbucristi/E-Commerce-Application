@@ -35,12 +35,12 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5221/");
+    client.BaseAddress = new Uri("http://localhost:5255/");
 });
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5221/");
+    client.BaseAddress = new Uri("http://localhost:5255/");
 });
 
 
