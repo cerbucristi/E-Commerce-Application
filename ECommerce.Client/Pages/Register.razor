@@ -1,4 +1,7 @@
 @page "/register"
+@using ECommerce.Client.ViewModels
+@inject NavigationManager navigationManager
+
 <div class="login-container">
     <header class="login-header">
         <h1 class="login-header-title">Register</h1>
@@ -25,9 +28,10 @@
             placeholder="Re-type Password"
             type="password"
             @bind-Value="Model.PasswordCheck"/>
+        <label class="text-danger">@error</label>
         <button class="login-form-button">Register</button>
     </form>
-    <span class="redirect-to-create-account">Already have an account? <br> Click here to login</span>
+    <span @onclick="RedirectToLoginPage" class="redirect-to-create-account">Already have an account? <br> Click here to login</span>
 </div>
 
 @* To be deleted *@
@@ -37,22 +41,41 @@
 <span>Password check is: @Model.PasswordCheck</span>
 
 @code {
+    string error { get; set; }
     [SupplyParameterFromForm] public RegisterViewModel Model { get; set; }
 
     protected override void OnInitialized() => Model = new();
 
-    public class RegisterViewModel
-    {
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string PasswordCheck { get; set; }
-    }
-
     private void SubmitRegisterUser()
     {
-        System.Diagnostics.Debug.WriteLine(Model.Email);
-        System.Diagnostics.Debug.WriteLine(Model.Password);
+        if (!Model.IsCompleted())
+        {
+            error = "Complete empty fields";
+            return;
+        }
+        
+        if (!Model.Password.Equals(Model.PasswordCheck))
+        {
+            error = "Passwords do not match";
+            return;
+        }
+
+        if (!Model.IsValidEmail())
+        {
+            error = "Type a correct e-mail";
+            return;
+        }
+
+        error = "";
+        try
+        {
+            // Implement User Register here
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
     }
 
+    private void RedirectToLoginPage() => navigationManager.NavigateTo("/login");
 }
