@@ -1,6 +1,6 @@
 .login-container {
     align-items: center;
-    background: linear-gradient(180deg, #7579ff, #b224ef);
+    background: linear-gradient(180deg, #191c83, #7579ff);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -62,8 +62,7 @@
 }
 
 .login-form-button:hover {
-    background-color: #4f259b;
-    color: #fafafa;
+    background-color: #99e7b6;
 }
 
 .redirect-to-create-account {

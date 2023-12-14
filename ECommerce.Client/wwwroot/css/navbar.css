@@ -1,0 +1,68 @@
+.navbar {
+    background: #191c83;
+    height: 80px;
+    width: 100%;
+}
+
+.navbar-option {
+    color: #fafafa;
+    text-decoration: none;
+}
+
+.navbar-option:hover {
+    color: #fafafa;
+}
+
+.navbar-admin-panel-button {
+    background-color: transparent;
+    color: #fafafa;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.navbar-admin-panel {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.navbar-admin-panel-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.navbar-admin-panel-content:after {
+    background-color: inherit;
+    content: '';
+    display: block;
+    height: 12px;
+    position: absolute;
+    right: 50%;
+    top: 0;
+    transform: rotate(45deg) translateY(-50%);
+    width: 12px;
+}
+
+/* Links inside the dropdown */
+.navbar-admin-panel-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.navbar-admin-panel-content a:hover {background-color: rgba(32, 48, 93, 0.15)
+}
+
+/* Show the dropdown menu on hover */
+.navbar-admin-panel:hover .navbar-admin-panel-content {
+    display: block;
+}

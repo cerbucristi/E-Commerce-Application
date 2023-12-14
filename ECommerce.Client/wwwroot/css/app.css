@@ -101,3 +101,23 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+
+
+
+
+input {
+    border: none;
+    outline: none;
+}
+
+main {
+    margin-top: 48px;
+}
+
+.page {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
