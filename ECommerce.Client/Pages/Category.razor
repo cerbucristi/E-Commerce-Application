@@ -1,0 +1,67 @@
+@page "/category"
+@using ECommerce.Client.ViewModels
+<div class="entity-list-container">
+    <h1 class="entity-name">Categories</h1>
+
+    <div class="entity-add-container">
+        <InputText
+            class="entity-add"
+            placeholder="✍️ Add Category"
+            @bind-Value="@NewCategory.CategoryName"/>
+
+        <button class="entity-add-button" @onclick="HandleAddNewCategory">+</button>
+    </div>
+    
+    <ul class="entity-list">
+        @foreach (var category in Categories)
+        {
+            <li class="entity-list-item">
+                <p class="entity-list-item-name">@category.CategoryName</p>
+                <button class="entity-list-item-delete-button">❌</button>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private List<CategoryViewModel> Categories = [];
+    
+    [SupplyParameterFromForm]
+    private CategoryViewModel NewCategory { get; set; }
+    
+    protected override void OnInitialized() => NewCategory = new();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Here we have to fetch the categories from the API.
+        // The response from the API should be stored in Categories variable
+        
+        // This is just a mock
+        var mockCategory1 = new CategoryViewModel
+        {
+            CategoryName = "Laptops"
+        };
+        Categories.Add(mockCategory1);
+        
+        var mockCategory2 = new CategoryViewModel
+        {
+            CategoryName = "Accessories"
+        };
+        Categories.Add(mockCategory2);
+        
+        var mockCategory3 = new CategoryViewModel
+        {
+            CategoryName = "Home Electronics"
+        };
+        Categories.Add(mockCategory3);
+    }
+
+    private void HandleAddNewCategory()
+    {
+        // First execute the update, and if the response is 
+        // positive, update the Categories array
+        
+        Categories.Add(NewCategory);
+        NewCategory = new();
+    } 
+}

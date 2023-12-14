@@ -1,0 +1,68 @@
+.entity-list-container {
+    text-align: center;
+    width: 320px;
+}
+
+.entity-name {
+    
+}
+
+.entity-add-container {
+    position: relative;
+}
+
+.entity-add {
+    border: 1px solid #501168;
+    border-radius: 4px;
+    color: #501168;
+    padding: 8px 16px;
+    width: 100%;
+}
+
+.entity-add-button {
+    background: none;
+    border: none;
+    color: #7579ff;
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+}
+
+.entity-add::placeholder {
+    padding-left: 4px;
+}
+
+.entity-list {
+    list-style: none;
+    padding-inline-start: 0;
+}
+
+.entity-list-item {
+    align-items: center;
+    background: linear-gradient(90deg, #b224ef, #7579ff);
+    border-radius: 4px;
+    color: #fafafa;
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding: 8px 16px;
+}
+
+.entity-list-item-name {
+    margin: 0;
+    text-align: center;
+}
+
+.entity-list-item-delete-button {
+    background-color: transparent;
+    border: none;
+    color: #fafafa;
+    font-size: 12px;
+    display: none;
+}
+
+.entity-list-item:hover .entity-list-item-delete-button {
+    display: block;
+}

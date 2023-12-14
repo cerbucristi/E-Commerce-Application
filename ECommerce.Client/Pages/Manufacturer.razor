@@ -1,0 +1,67 @@
+@page "/manufacturer"
+@using ECommerce.Client.ViewModels
+<div class="entity-list-container">
+    <h1 class="entity-name">Manufacturers</h1>
+
+    <div class="entity-add-container">
+        <InputText
+            class="entity-add"
+            placeholder="✍️ Add Manufacturer"
+            @bind-Value="@NewManufacturer.ManufacturerName"/>
+
+        <button class="entity-add-button" @onclick="HandleAddNewManufacturer">+</button>
+    </div>
+    
+    <ul class="entity-list">
+        @foreach (var manufacturer in Manufacturers)
+        {
+            <li class="entity-list-item">
+                <p class="entity-list-item-name">@manufacturer.ManufacturerName</p>
+                <button class="entity-list-item-delete-button">❌</button>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private List<ManufacturerViewModel> Manufacturers = [];
+    
+    [SupplyParameterFromForm]
+    private ManufacturerViewModel NewManufacturer { get; set; }
+    
+    protected override void OnInitialized() => NewManufacturer = new();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Here we have to fetch the manufacturers from the API.
+        // The response from the API should be stored in Manufacturers variable
+        
+        // This is just a mock
+        var mockManufacturer1 = new ManufacturerViewModel
+        {
+            ManufacturerName = "Amazon"
+        };
+        Manufacturers.Add(mockManufacturer1);
+        
+        var mockManufacturer2 = new ManufacturerViewModel
+        {
+            ManufacturerName = "3E Security"
+        };
+        Manufacturers.Add(mockManufacturer2);
+        
+        var mockManufacturer3 = new ManufacturerViewModel
+        {
+            ManufacturerName = "Adetel Group"
+        };
+        Manufacturers.Add(mockManufacturer3);
+    }
+
+    private void HandleAddNewManufacturer()
+    {
+        // First execute the update, and if the response is 
+        // positive, update the Manufacturers array
+
+        Manufacturers.Add(NewManufacturer);
+        NewManufacturer = new();
+    } 
+}
