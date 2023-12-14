@@ -1,6 +1,8 @@
 @page "/login"
 @using ECommerce.Client.ViewModels
+@using ECommerce.Client.Auth
 @inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
 
 <div class="login-container">
     <header class="login-header">
@@ -30,14 +32,15 @@
 <span>Password is: @Model.Password</span>
 
 @code {
+  
     string error { get; set; }
-    
+
     [SupplyParameterFromForm]
     public LoginViewModel Model { get; set; }
 
     protected override void OnInitialized() => Model = new();
-    
-    private void SubmitLogin()
+
+    private async void SubmitLogin()
     {
         if (!Model.IsCompleted())
         {
@@ -48,7 +51,9 @@
         error = "";
         try
         {
-            // Implement User Login here
+            await authStateProvider.Login(Model);
+          
+            navigationManager.NavigateTo("/");
         }
         catch (Exception e)
         {
