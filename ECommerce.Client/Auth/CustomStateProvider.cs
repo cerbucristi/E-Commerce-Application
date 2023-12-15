@@ -26,6 +26,12 @@ namespace ECommerce.Client.Auth
                     var claims = new[] { new Claim(ClaimTypes.Name, "user logged") };
                     identity = new ClaimsIdentity(claims, "Server authentication");
                 }
+                else
+                {
+                    var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
+                    var authState = Task.FromResult(new AuthenticationState(anonUser));
+                    NotifyAuthenticationStateChanged(authState);
+                }
             }
             catch (HttpRequestException ex)
             {

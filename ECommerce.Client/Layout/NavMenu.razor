@@ -1,24 +1,39 @@
 ﻿
 @using ECommerce.Client.Auth
 @using ECommerce.Client.Contracts
+@using ECommerce.Client.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+
 @inject NavigationManager navigationManager
 
 <nav class="navbar">
     <ul class="navbar-left-container">
         <NavLink class="navbar-option" href="/">Home</NavLink>
     </ul>
+
+
     <ul class="navbar-right-container">
-        <div class="navbar-admin-panel">
-            <button class="navbar-admin-panel-button">Admin Panel</button>
-            <div class="navbar-admin-panel-content">
-                <NavLink href="/category">Categories</NavLink>
-                <NavLink href="/manufacturer">Manufacturers</NavLink>
-            </div>
-        </div>
-        <NavLink class="navbar-option" href="/login">Login</NavLink>
-        <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
+        <CascadingAuthenticationState>
+            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+                <Authorized>
+                    <div class="navbar-admin-panel">
+                        <button class="navbar-admin-panel-button">Admin Panel</button>
+                        <div class="navbar-admin-panel-content">
+                            <NavLink href="/category">Categories</NavLink>
+                            <NavLink href="/manufacturer">Manufacturers</NavLink>
+                        </div>
+                    </div>
+                    <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
+                </Authorized>
+
+                <NotAuthorized>
+                    <NavLink class="navbar-option" href="/login">Login</NavLink>
+                </NotAuthorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        </CascadingAuthenticationState>
     </ul>
 </nav>
+
 
 @code {
     [Inject]
@@ -29,7 +44,7 @@
         try
         {
             await AuthenticationService.Logout();
-
+            
             navigationManager.NavigateTo("/");
         }
         catch (Exception e)

@@ -50,6 +50,7 @@
     top: 0;
     transform: rotate(45deg) translateY(-50%);
     width: 12px;
+    z-index: -1;
 }
 
 /* Links inside the dropdown */
