@@ -2,29 +2,39 @@
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
+@using Microsoft.AspNetCore.Components.Authorization
 
-<div class="entity-list-container">
-    <h1 class="entity-name">Categories</h1>
-
-    <div class="entity-add-container">
-        <InputText
-            class="entity-add"
-            placeholder="✍️ Add Category"
-            @bind-Value="@NewCategory.CategoryName"/>
-
-        <button class="entity-add-button" @onclick="HandleAddNewCategory">+</button>
-    </div>
-    
-    <ul class="entity-list">
-        @foreach (var category in Categories)
-        {
-            <li class="entity-list-item">
-                <p class="entity-list-item-name">@category.CategoryName</p>
-                <button class="entity-list-item-delete-button">❌</button>
-            </li>
-        }
-    </ul>
-</div>
+<CascadingAuthenticationState>
+<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+    <Authorized>
+        <div class="entity-list-container">
+            <h1 class="entity-name">Categories</h1>
+        
+            <div class="entity-add-container">
+                <InputText
+                    class="entity-add"
+                    placeholder="✍️ Add Category"
+                    @bind-Value="@NewCategory.CategoryName"/>
+        
+                <button class="entity-add-button" @onclick="HandleAddNewCategory">+</button>
+            </div>
+            
+            <ul class="entity-list">
+                @foreach (var category in Categories)
+                {
+                    <li class="entity-list-item">
+                        <p class="entity-list-item-name">@category.CategoryName</p>
+                        <button class="entity-list-item-delete-button">❌</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+</CascadingAuthenticationState>
 
 @code {
     string error { get; set; }

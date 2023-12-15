@@ -28,9 +28,8 @@ namespace ECommerce.Client.Auth
                 }
                 else
                 {
-                    var anonUser = new ClaimsPrincipal(new ClaimsIdentity());
-                    var authState = Task.FromResult(new AuthenticationState(anonUser));
-                    NotifyAuthenticationStateChanged(authState);
+                    var anonUser = new ClaimsIdentity();
+                    identity = anonUser;
                 }
             }
             catch (HttpRequestException ex)

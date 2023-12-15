@@ -1,28 +1,41 @@
 @page "/manufacturer"
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.ViewModels
-<div class="entity-list-container">
-    <h1 class="entity-name">Manufacturers</h1>
+@using Microsoft.AspNetCore.Components.Authorization
 
-    <div class="entity-add-container">
-        <InputText
-            class="entity-add"
-            placeholder="✍️ Add Manufacturer"
-            @bind-Value="@NewManufacturer.ManufacturerName"/>
+<CascadingAuthenticationState>
+<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+    <Authorized>
+        <div class="entity-list-container">
+            <h1 class="entity-name">Manufacturers</h1>
+        
+            <div class="entity-add-container">
+                <InputText
+                    class="entity-add"
+                    placeholder="✍️ Add Manufacturer"
+                    @bind-Value="@NewManufacturer.ManufacturerName"/>
+        
+                <button class="entity-add-button" @onclick="HandleAddNewManufacturer">+</button>
+            </div>
+            
+            <ul class="entity-list">
+                @foreach (var manufacturer in Manufacturers)
+                {
+                    <li class="entity-list-item">
+                        <p class="entity-list-item-name">@manufacturer.ManufacturerName</p>
+                        <button class="entity-list-item-delete-button">❌</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+</CascadingAuthenticationState>
 
-        <button class="entity-add-button" @onclick="HandleAddNewManufacturer">+</button>
-    </div>
-    
-    <ul class="entity-list">
-        @foreach (var manufacturer in Manufacturers)
-        {
-            <li class="entity-list-item">
-                <p class="entity-list-item-name">@manufacturer.ManufacturerName</p>
-                <button class="entity-list-item-delete-button">❌</button>
-            </li>
-        }
-    </ul>
-</div>
+
 
 @code {
 
