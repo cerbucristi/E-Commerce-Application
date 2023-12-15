@@ -57,6 +57,7 @@
             await ManufacturerDataService.CreateManufacturerAsync(NewManufacturer);
             Manufacturers.Add(NewManufacturer);
             NewManufacturer = new();
+            StateHasChanged();
         }
         catch (Exception e)
         {
