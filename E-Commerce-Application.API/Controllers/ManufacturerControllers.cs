@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_Commerce_Application.API.Controllers
 {
     [EnableCors("Open")]
-    [Authorize(Roles = "Admin")]
-    public class ManufacturerController : ApiControllerBase
+    [Authorize(Roles = "User")]
+    public class ManufacturersController : ApiControllerBase
     {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -31,7 +31,7 @@ namespace E_Commerce_Application.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetAllManufacturersQuery());
-            return Ok(result);
+            return Ok(result.Manufacturers);
         }
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
