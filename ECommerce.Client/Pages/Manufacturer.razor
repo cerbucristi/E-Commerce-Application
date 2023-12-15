@@ -1,4 +1,5 @@
 @page "/manufacturer"
+@using ECommerce.Client.Contracts
 @using ECommerce.Client.ViewModels
 <div class="entity-list-container">
     <h1 class="entity-name">Manufacturers</h1>
@@ -24,44 +25,42 @@
 </div>
 
 @code {
+
+    string error { get; set; } 
+
     private List<ManufacturerViewModel> Manufacturers = [];
     
     [SupplyParameterFromForm]
     private ManufacturerViewModel NewManufacturer { get; set; }
-    
+
+    [Inject]
+    public IManufacturerDataService ManufacturerDataService { get; set; }
+
     protected override void OnInitialized() => NewManufacturer = new();
     
     protected override async Task OnInitializedAsync()
     {
-        // Here we have to fetch the manufacturers from the API.
-        // The response from the API should be stored in Manufacturers variable
-        
-        // This is just a mock
-        var mockManufacturer1 = new ManufacturerViewModel
+        try
         {
-            ManufacturerName = "Amazon"
-        };
-        Manufacturers.Add(mockManufacturer1);
-        
-        var mockManufacturer2 = new ManufacturerViewModel
+            Manufacturers = (await ManufacturerDataService.GetManufacturersAsync()).ToList();
+        }
+        catch (Exception e)
         {
-            ManufacturerName = "3E Security"
-        };
-        Manufacturers.Add(mockManufacturer2);
-        
-        var mockManufacturer3 = new ManufacturerViewModel
-        {
-            ManufacturerName = "Adetel Group"
-        };
-        Manufacturers.Add(mockManufacturer3);
+            error = e.Message;
+        }
     }
 
-    private void HandleAddNewManufacturer()
+    private async void HandleAddNewManufacturer()
     {
-        // First execute the update, and if the response is 
-        // positive, update the Manufacturers array
-
-        Manufacturers.Add(NewManufacturer);
-        NewManufacturer = new();
+        try
+        {
+            await ManufacturerDataService.CreateManufacturerAsync(NewManufacturer);
+            Manufacturers.Add(NewManufacturer);
+            NewManufacturer = new();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
     } 
 }
