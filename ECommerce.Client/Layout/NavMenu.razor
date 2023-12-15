@@ -1,7 +1,7 @@
 ﻿
 @using ECommerce.Client.Auth
+@using ECommerce.Client.Contracts
 @inject NavigationManager navigationManager
-@inject CustomStateProvider authStateProvider
 
 <nav class="navbar">
     <ul class="navbar-left-container">
@@ -16,20 +16,19 @@
             </div>
         </div>
         <NavLink class="navbar-option" href="/login">Login</NavLink>
-        <NavLink class="navbar-option" href="/">Logout</NavLink>
+        <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
     </ul>
 </nav>
 
 @code {
+    [Inject]
+    public IAuthenticationService AuthenticationService { get; set; }
 
     private async void OnLogout()
     {
-       
-
-       
         try
         {
-            await authStateProvider.Logout();
+            await AuthenticationService.Logout();
 
             navigationManager.NavigateTo("/");
         }

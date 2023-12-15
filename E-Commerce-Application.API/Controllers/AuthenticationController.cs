@@ -73,5 +73,13 @@ namespace ECommerce.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout();
+            return Ok();
+        }
     }
 }

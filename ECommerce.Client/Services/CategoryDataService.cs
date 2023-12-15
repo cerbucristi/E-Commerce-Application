@@ -32,6 +32,8 @@ namespace ECommerce.Client.Services
 
         public async Task<List<CategoryViewModel>> GetCategoriesAsync()
         {
+            httpClient.DefaultRequestHeaders.Authorization 
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
             var result = await httpClient.GetAsync(RequestUri, HttpCompletionOption.ResponseHeadersRead);
             result.EnsureSuccessStatusCode();
             var content = await result.Content.ReadAsStringAsync();
