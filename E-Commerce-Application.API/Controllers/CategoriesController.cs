@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace ECommerce.API.Controllers
 {
     [EnableCors("Open")]
-    [Authorize(Roles = "Admin")]
     public class CategoriesController : ApiControllerBase
     {
      
@@ -34,7 +33,7 @@ namespace ECommerce.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await Mediator.Send(new GetAllCategoriesQuery());
-            return Ok(result);
+            return Ok(result.Categories);
         }
 
         [HttpGet("{id}")]
