@@ -60,6 +60,7 @@
             await CategoryDataService.CreateCategoryAsync(NewCategory);
             Categories.Add(NewCategory);
             NewCategory = new();
+            StateHasChanged();
         }
         catch (Exception e)
         {
