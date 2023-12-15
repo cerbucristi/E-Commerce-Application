@@ -43,7 +43,7 @@
     {
         try
         {
-            Categories = await CategoryDataService.GetCategoriesAsync();
+            Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
         }
         catch (Exception e)
         {
