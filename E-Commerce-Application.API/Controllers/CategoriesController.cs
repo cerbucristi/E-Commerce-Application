@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using ECommerce.Application.Features.Events.Commands.DeleteCategory;
 using ECommerce.Application.Features.Categories.Commands.UpdateCategory;
 using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.API.Controllers
 {
-    [Authorize(Roles = "User")]
+    [EnableCors("Open")]
+    [Authorize(Roles = "Admin")]
     public class CategoriesController : ApiControllerBase
     {
      

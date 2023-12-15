@@ -1,5 +1,8 @@
 @page "/category"
 @using ECommerce.Client.ViewModels
+@using ECommerce.Client.Services
+@using ECommerce.Client.Contracts
+
 <div class="entity-list-container">
     <h1 class="entity-name">Categories</h1>
 
@@ -24,44 +27,43 @@
 </div>
 
 @code {
+    string error { get; set; }
+
     private List<CategoryViewModel> Categories = [];
-    
+
     [SupplyParameterFromForm]
     private CategoryViewModel NewCategory { get; set; }
-    
+
+    [Inject]
+    public ICategoryDataService CategoryDataService { get; set;} 
+
     protected override void OnInitialized() => NewCategory = new();
-    
+
     protected override async Task OnInitializedAsync()
     {
-        // Here we have to fetch the categories from the API.
-        // The response from the API should be stored in Categories variable
-        
-        // This is just a mock
-        var mockCategory1 = new CategoryViewModel
+        try
         {
-            CategoryName = "Laptops"
-        };
-        Categories.Add(mockCategory1);
-        
-        var mockCategory2 = new CategoryViewModel
+            Categories = await CategoryDataService.GetCategoriesAsync();
+        }
+        catch (Exception e)
         {
-            CategoryName = "Accessories"
-        };
-        Categories.Add(mockCategory2);
-        
-        var mockCategory3 = new CategoryViewModel
-        {
-            CategoryName = "Home Electronics"
-        };
-        Categories.Add(mockCategory3);
+            error = e.Message;
+        }
+
     }
 
-    private void HandleAddNewCategory()
+    private async void HandleAddNewCategory()
     {
-        // First execute the update, and if the response is 
-        // positive, update the Categories array
-        
-        Categories.Add(NewCategory);
-        NewCategory = new();
+
+        try
+        {
+            await CategoryDataService.CreateCategoryAsync(NewCategory);
+            Categories.Add(NewCategory);
+            NewCategory = new();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
     } 
 }

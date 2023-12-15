@@ -6,11 +6,13 @@ using ECommerce.Application.Features.Manufacturers.Queries.GetAll;
 using ECommerce.Application.Features.Manufacturers.Queries.GetById;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce_Application.API.Controllers
 {
-    [Authorize(Roles = "User")]
+    [EnableCors("Open")]
+    [Authorize(Roles = "Admin")]
     public class ManufacturerController : ApiControllerBase
     {
         [HttpPost]
