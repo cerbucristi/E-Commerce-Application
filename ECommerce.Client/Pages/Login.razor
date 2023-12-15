@@ -14,7 +14,7 @@
         @onsubmit="SubmitLogin">
         <InputText 
             class="login-form-input" 
-            placeholder="E-Mail" 
+            placeholder="Username" 
             @bind-Value="Model.Username" />
         <InputText 
             class="login-form-input" 
@@ -26,10 +26,6 @@
     </form>
     <span @onclick="RedirectToRegisterPage" class="redirect-to-create-account">No account? <br> Click here to create one</span>
 </div>
-
-@* To be deleted *@
-<span>Email is: @Model.Username</span> 
-<span>Password is: @Model.Password</span>
 
 @code {
   

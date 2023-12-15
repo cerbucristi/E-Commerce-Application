@@ -31,8 +31,8 @@ namespace ECommerce.Identity.Services
             ApplicationUser user = new ApplicationUser()
             {
                 Email = model.Email,
-                Id = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.Username,
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)

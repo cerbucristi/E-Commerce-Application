@@ -36,12 +36,6 @@
     <span @onclick="RedirectToLoginPage" class="redirect-to-create-account">Already have an account? <br> Click here to login</span>
 </div>
 
-@* To be deleted *@
-<span>Email is: @Model.Email</span>
-<span>Username is: @Model.Username</span>
-<span>Password is: @Model.Password</span>
-<span>Password check is: @Model.PasswordCheck</span>
-
 @code {
     string error { get; set; }
     [SupplyParameterFromForm]
