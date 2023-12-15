@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.API.Controllers
 {
+    [Authorize(Roles = "User")]
     [EnableCors("Open")]
     public class CategoriesController : ApiControllerBase
     {
