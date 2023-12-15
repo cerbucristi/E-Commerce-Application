@@ -39,8 +39,8 @@ namespace ECommerce.Client.Services
             {
                 throw new ApplicationException(content);
             }
-            var categories = JsonSerializer.Deserialize<List<ManufacturerViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            return categories!;
+            var manufacturers = JsonSerializer.Deserialize<List<ManufacturerViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return manufacturers!;
         }
     }
 }
