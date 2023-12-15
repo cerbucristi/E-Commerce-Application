@@ -13,6 +13,7 @@ namespace ECommerce.Identity.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration configuration;
         public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
@@ -70,6 +71,11 @@ namespace ECommerce.Identity.Services
             return (1, token);
         }
 
+        public async Task<(int, string)> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return (1, "User logged out successfully!");
+        }
 
         private string GenerateToken(IEnumerable<Claim> claims)
         {

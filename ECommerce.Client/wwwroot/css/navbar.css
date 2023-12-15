@@ -12,6 +12,7 @@
 
 .navbar-option:hover {
     color: #fafafa;
+    cursor: pointer;
 }
 
 .navbar-admin-panel-button {
