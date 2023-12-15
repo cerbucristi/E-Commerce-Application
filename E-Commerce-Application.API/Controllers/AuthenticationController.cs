@@ -1,10 +1,12 @@
 ﻿using ECommerce.Application.Contracts.Identity;
 using ECommerce.Application.Models.Identity;
 using ECommerce.Identity.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers
 {
+    [EnableCors("Open")]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase

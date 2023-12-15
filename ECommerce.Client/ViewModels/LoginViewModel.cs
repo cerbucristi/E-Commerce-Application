@@ -5,11 +5,11 @@ public class LoginViewModel
     public bool IsCompleted()
     {
         return !(
-            string.IsNullOrEmpty(this.Email) ||
+            string.IsNullOrEmpty(this.Username) ||
             string.IsNullOrEmpty(this.Password)
         );
     }
     
-    public string Email { get; set; }
+    public string Username { get; set; }
     public string Password { get; set; }
 }
