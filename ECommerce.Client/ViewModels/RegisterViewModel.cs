@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace ECommerce.Client.ViewModels;
@@ -26,4 +27,9 @@ public class RegisterViewModel
     public string Username { get; set; }
     public string Password { get; set; }
     public string PasswordCheck { get; set; }
+
+    public override string ToString()
+    {
+        return JsonSerializer.Serialize(this);
+    }
 }

@@ -1,6 +1,8 @@
 @page "/register"
 @using ECommerce.Client.ViewModels
+@using ECommerce.Client.Auth
 @inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
 
 <div class="login-container">
     <header class="login-header">
@@ -42,12 +44,14 @@
 
 @code {
     string error { get; set; }
-    [SupplyParameterFromForm] public RegisterViewModel Model { get; set; }
+    [SupplyParameterFromForm]
+    public RegisterViewModel Model { get; set; }
 
     protected override void OnInitialized() => Model = new();
 
-    private void SubmitRegisterUser()
+    private async void SubmitRegisterUser()
     {
+        
         if (!Model.IsCompleted())
         {
             error = "Complete empty fields";
@@ -69,7 +73,9 @@
         error = "";
         try
         {
-            // Implement User Register here
+            await authStateProvider.Register(Model) ;
+
+            navigationManager.NavigateTo("/login");
         }
         catch (Exception e)
         {
