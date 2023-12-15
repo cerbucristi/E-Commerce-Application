@@ -33,6 +33,11 @@ builder.Services.AddScoped<CustomStateProvider>();
 //builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+builder.Services.AddHttpClient<IManufacturerDataService, ManufacturerService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5255/");
+});
+
 builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5255/");
