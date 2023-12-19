@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Entities;
+using ECommerce.Identity.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure

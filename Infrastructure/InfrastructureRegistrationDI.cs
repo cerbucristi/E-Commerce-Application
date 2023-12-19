@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Persistence;
+using ECommerce.Infrastructure.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,8 @@ namespace Infrastructure
                 typeof(BaseRepository<>));
             services.AddScoped<ICategoryRepository,CategoryRepository>();
             services.AddScoped<IManufacturerRepository,ManufacturerRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
 
             return services;
         }

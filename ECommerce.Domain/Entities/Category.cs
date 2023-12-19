@@ -8,11 +8,12 @@ namespace ECommerce.Domain.Entities
         {
             CategoryId = Guid.NewGuid();
             CategoryName = categoryName;
+            Products = new List<Product>();
         }
 
         public Guid CategoryId { get; private set; }
         public string CategoryName { get; private set; } = string.Empty;
-        public List<Product>? Products { get; private set; }
+        public List<Product> Products { get; private set; }
 
         public static Result<Category> Create(string categoryName)
         {

@@ -44,7 +44,7 @@ namespace ECommerce.Identity.Services
 
             if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
-
+       
             return (1, "User created successfully!");
         }
 

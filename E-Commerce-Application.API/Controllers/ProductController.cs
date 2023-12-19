@@ -1,25 +1,25 @@
 ﻿using E_Commerce_Application.API.Controllers;
-using ECommerce.Application.Features.Categories.Commands.CreateCategory;
-using ECommerce.Application.Features.Categories.Queries.GetAll;
-using ECommerce.Application.Features.Categories.Queries.GetById;
+using ECommerce.Application.Features.Products.Queries.GetAll;
+using ECommerce.Application.Features.Products.Queries.GetById;
+
 
 using Microsoft.AspNetCore.Mvc;
-using ECommerce.Application.Features.Events.Commands.DeleteCategory;
-using ECommerce.Application.Features.Categories.Commands.UpdateCategory;
-using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
+using ECommerce.Application.Features.Products.Commands.CreateProduct;
+using ECommerce.Application.Features.Products.Commands.DeleteProduct;
+using ECommerce.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ECommerce.API.Controllers
 {
     [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
-    public class CategoriesController : ApiControllerBase
+    public class ProductController : ApiControllerBase
     {
-     
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateCategoryCommand command)
+        public async Task<IActionResult> Create(CreateProductCommand command)
         {
             var result = await Mediator.Send(command);
             if (!result.Success)
@@ -33,15 +33,15 @@ namespace ECommerce.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var result = await Mediator.Send(new GetAllCategoriesQuery());
-            return Ok(result.Categories);
+            var result = await Mediator.Send(new GetAllProductsQuery());
+            return Ok(result.Products);
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
         {
-            var result = await Mediator.Send(new GetByIdCategoryQuery(id));
+            var result = await Mediator.Send(new GetByIdProductQuery(id));
             return Ok(result);
         }
         [HttpDelete("{id}")]
@@ -50,8 +50,8 @@ namespace ECommerce.API.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var deleteCategoryCommand = new DeleteCategoryCommand() { CategoryId = id };
-            await Mediator.Send(deleteCategoryCommand);
+            var deleteProductCommand = new DeleteProductCommand() { ProductId = id };
+            await Mediator.Send(deleteProductCommand);
             return NoContent();
         }
         [HttpPut("{id}")]
@@ -59,9 +59,9 @@ namespace ECommerce.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Update(Guid id, UpdateCategoryCommand command)
+        public async Task<IActionResult> Update(Guid id, UpdateProductCommand command)
         {
-            if (id != command.CategoryId)
+            if (id != command.ProductId)
             {
                 return BadRequest("ID mismatch between route parameter and request body.");
             }

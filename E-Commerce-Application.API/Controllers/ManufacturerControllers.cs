@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_Commerce_Application.API.Controllers
 {
     [EnableCors("Open")]
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class ManufacturersController : ApiControllerBase
     {
         [HttpPost]
