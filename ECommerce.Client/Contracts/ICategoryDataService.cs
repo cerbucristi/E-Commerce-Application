@@ -8,5 +8,9 @@ namespace ECommerce.Client.Contracts
         Task<List<CategoryViewModel>> GetCategoriesAsync();
 
         Task<ApiResponse<CategoryDto>> CreateCategoryAsync(CategoryViewModel categoryViewModel);
+        Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(CategoryViewModel category);
+        Task<ApiResponse<CategoryDto>> DeleteCategoryAsync(CategoryViewModel category);
+
+
     }
 }
