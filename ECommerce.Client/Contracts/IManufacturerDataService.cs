@@ -8,5 +8,8 @@ namespace ECommerce.Client.Contracts
         Task<List<ManufacturerViewModel>> GetManufacturersAsync();
 
         Task<ApiResponse<ManufacturerDto>> CreateManufacturerAsync(ManufacturerViewModel manufacturerViewModel);
+        Task<ApiResponse<ManufacturerDto>> UpdateManufacturerAsync(ManufacturerViewModel manufacturerViewModel);
+        Task<ApiResponse<ManufacturerDto>> DeleteManufacturerAsync(ManufacturerViewModel manufacturerViewModel);
     }
+
 }

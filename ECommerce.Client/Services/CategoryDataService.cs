@@ -66,6 +66,7 @@ namespace ECommerce.Client.Services
                 new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
 
             var result = await httpClient.DeleteAsync($"{RequestUri}/{category.CategoryId}");
+            result.EnsureSuccessStatusCode();
 
             if (result.IsSuccessStatusCode)
             {

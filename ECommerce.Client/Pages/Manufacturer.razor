@@ -4,45 +4,60 @@
 @using Microsoft.AspNetCore.Components.Authorization
 
 <CascadingAuthenticationState>
-<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-    <Authorized>
-        <div class="entity-list-container">
-            <h1 class="entity-name">Manufacturers</h1>
-        
-            <div class="entity-add-container">
-                <InputText
-                    class="entity-add"
-                    placeholder="✍️ Add Manufacturer"
-                    @bind-Value="@NewManufacturer.ManufacturerName"/>
-        
-                <button class="entity-add-button" @onclick="HandleAddNewManufacturer">+</button>
+    <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        <Authorized>
+            <div class="entity-list-container">
+                <h1 class="entity-name">Manufacturers</h1>
+
+                <div class="entity-add-container">
+                    <InputText class="entity-add"
+                               placeholder="✍️ Add Manufacturer"
+                               @bind-Value="@NewManufacturer.ManufacturerName" />
+
+                    <button class="entity-add-button" @onclick="HandleAddNewManufacturer">+</button>
+                </div>
+
+                <ul class="entity-list">
+                    @foreach (var manufacturer in Manufacturers)
+                    {
+                        <li class="entity-list-item">
+                            <div class="category-container">
+                                <p class="entity-list-item-name">@manufacturer.ManufacturerName</p>
+                                <div class="button-container ms-auto">
+                                    @if (!manufacturer.IsEditing)
+                                    {
+                                        <button class="btn btn-danger btn-sm" @onclick="() => HandleDeleteManufacturer(manufacturer)">Delete</button>
+                                        <button class="btn btn-primary btn-sm ms-1" @onclick="() => StartEditingManufacturer(manufacturer)">Update</button>
+                                    }
+                                </div>
+                            </div>
+                            @if (manufacturer.IsEditing)
+                            {
+                                <div class="edit-category-dialog">
+                                    <InputText @bind-Value="@manufacturer.EditedManufacturerName" />
+                                    <div class="button-container text-end">
+                                        <button class="btn btn-success btn-sm" @onclick="() => HandleUpdateManufacturerAsync(manufacturer)">Save</button>
+                                        <button class="btn btn-secondary btn-sm ms-1" @onclick="() => CancelEditingManufacturer(manufacturer)">Cancel</button>
+                                    </div>
+                                </div>
+                            }
+                        </li>
+                    }
+                </ul>
             </div>
-            
-            <ul class="entity-list">
-                @foreach (var manufacturer in Manufacturers)
-                {
-                    <li class="entity-list-item">
-                        <p class="entity-list-item-name">@manufacturer.ManufacturerName</p>
-                        <button class="entity-list-item-delete-button">❌</button>
-                    </li>
-                }
-            </ul>
-        </div>
-    </Authorized>
-    <NotAuthorized>
-        <Login />
-    </NotAuthorized>
-</Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        </Authorized>
+        <NotAuthorized>
+            <Login />
+        </NotAuthorized>
+    </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
 </CascadingAuthenticationState>
-
-
 
 @code {
 
-    string error { get; set; } 
+    string error { get; set; }
 
     private List<ManufacturerViewModel> Manufacturers = [];
-    
+
     [SupplyParameterFromForm]
     private ManufacturerViewModel NewManufacturer { get; set; }
 
@@ -50,7 +65,7 @@
     public IManufacturerDataService ManufacturerDataService { get; set; }
 
     protected override void OnInitialized() => NewManufacturer = new();
-    
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -76,5 +91,50 @@
         {
             error = e.Message;
         }
-    } 
+    }
+
+    private void StartEditingManufacturer(ManufacturerViewModel manufacturer)
+    {
+        manufacturer.IsEditing = true;
+        manufacturer.EditedManufacturerName = manufacturer.ManufacturerName;
+    }
+
+    private void CancelEditingManufacturer(ManufacturerViewModel manufacturer)
+    {
+        manufacturer.IsEditing = false;
+    }
+
+    private async Task HandleUpdateManufacturerAsync(ManufacturerViewModel manufacturer)
+    {
+        try
+        {
+            manufacturer.ManufacturerName = manufacturer.EditedManufacturerName;
+            await ManufacturerDataService.UpdateManufacturerAsync(manufacturer);
+            manufacturer.IsEditing = false;
+
+            Manufacturers = (await ManufacturerDataService.GetManufacturersAsync()).ToList();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async void HandleDeleteManufacturer(ManufacturerViewModel manufacturer)
+    {
+        try
+        {
+            var response = await ManufacturerDataService.DeleteManufacturerAsync(manufacturer);
+
+            if (response.IsSuccess)
+            {
+                Manufacturers.Remove(manufacturer);
+                StateHasChanged();
+            }
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
 }
