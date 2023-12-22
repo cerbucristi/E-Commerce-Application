@@ -31,7 +31,6 @@ namespace ECommerce.Domain.Entities
             {
                 Category = category;
                 CategoryId = category.CategoryId;
-
                 category.Products.Add(this);
             }
         }
@@ -41,7 +40,6 @@ namespace ECommerce.Domain.Entities
             {
                 Manufacturer = manufacturer;
                 ManufacturerId = manufacturer.ManufacturerId;
-
                 manufacturer.Products.Add(this);
             }
         }

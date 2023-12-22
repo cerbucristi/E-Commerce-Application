@@ -11,6 +11,7 @@ namespace ECommerce.Domain.Entities
             OrderDate = DateTime.UtcNow;
             OrderStatus = "Pending"; //vom folosi enum or smth
             OrderItems = new List<OrderItem>();
+            Payments = new List<Payment>();
         }
 
         public Guid OrderId { get; private set; }
@@ -22,6 +23,10 @@ namespace ECommerce.Domain.Entities
 
         public static Result<Order> Create(Guid customerId)
         {
+            if (customerId == Guid.Empty)
+            {
+                return Result<Order>.Failure("Invalid customer id.");
+            }
             return Result<Order>.Success(new Order(customerId));
         }
 

@@ -17,6 +17,10 @@ namespace ECommerce.Domain.Entities
 
         public static Result<ShoppingCart> Create(Guid customerId)
         {
+            if (customerId == Guid.Empty)
+            {
+                return Result<ShoppingCart>.Failure("Invalid customer id.");
+            }
             return Result<ShoppingCart>.Success(new ShoppingCart(customerId));
         }
 
