@@ -8,7 +8,7 @@ namespace ECommerce.Domain.Entities
         {
             ManufacturerId = Guid.NewGuid();
             ManufacturerName = manufacturerName;
-            Products = new List<Product>();
+            
         }
 
         public Guid ManufacturerId { get; private set; }
@@ -34,6 +34,10 @@ namespace ECommerce.Domain.Entities
         }
         public void Update(string manufacturerName)
         {
+            if (string.IsNullOrWhiteSpace(manufacturerName))
+            {
+                return;
+            }
             ManufacturerName = manufacturerName;
         }
 

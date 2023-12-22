@@ -8,7 +8,7 @@ namespace ECommerce.Domain.Entities
         {
             CategoryId = Guid.NewGuid();
             CategoryName = categoryName;
-            Products = new List<Product>();
+            
         }
 
         public Guid CategoryId { get; private set; }

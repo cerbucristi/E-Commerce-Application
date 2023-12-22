@@ -1,5 +1,6 @@
 ﻿using ECommerce.Domain.Entities;
 using FluentAssertions;
+using Newtonsoft.Json.Bson;
 namespace ECommerce.Domain.Tests
 {
     public class ProductTests
@@ -20,11 +21,41 @@ namespace ECommerce.Domain.Tests
             result.IsSuccess.Should().BeTrue();
         }
         [Fact]
-        public void When_CreateProductIsNull_Then_FailureIsReturned()
+        public void When_CreateProductIsCalled_And_PriceIsLowerThanZero() { 
+            // Arrange
+            var productName = "Product Test";
+            var productDescription = "Description Test";
+            var productPrice = -10;
+            var productQuantity = 1;
+            var categoryId = Guid.NewGuid();
+            var manufacturerId = Guid.NewGuid();
+            // Act
+            var result = Product.Create(productName, productDescription, productPrice, productQuantity, categoryId, manufacturerId);
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+        }
+        [Fact]
+        public void When_CreateProductIsCalled_And_QuantityIsLowerThanZero()
+        {
+            // Arrange
+            var productName = "Product Test";
+            var productDescription = "Description Test";
+            var productPrice = 10;
+            var productQuantity = -1;
+            var categoryId = Guid.NewGuid();
+            var manufacturerId = Guid.NewGuid();
+            // Act
+            var result = Product.Create(productName, productDescription, productPrice, productQuantity, categoryId, manufacturerId);
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+        }
+
+        [Fact]
+        public void When_CreateProductIsCalled_And_ProductNameIsNull()
         {
             // Arrange          
             // Act
-            var result = Product.Create(null!, null!, 0, 0, Guid.Empty, Guid.Empty);
+            var result = Product.Create(null!, "", 0, 0, Guid.Empty, Guid.Empty);
             // Assert
             result.IsSuccess.Should().BeFalse();
         }
@@ -43,13 +74,17 @@ namespace ECommerce.Domain.Tests
         {
             // Arrange
             var product = Product.Create("Product Test", "Description Test", 10, 1, Guid.NewGuid(), Guid.NewGuid()).Value;
+            var guid1 = Guid.NewGuid();
+            var guid2 = Guid.NewGuid();
             // Act
-            product.Update("Product Test 2", "Description Test 2", 20, 2, Guid.NewGuid(), Guid.NewGuid());
+            product.Update("Product Test 2", "Description Test 2", 20, 2, guid1, guid2);
             // Assert
             product.ProductName.Should().Be("Product Test 2");
             product.Description.Should().Be("Description Test 2");  
             product.Price.Should().Be(20);
             product.StockQuantity.Should().Be(2);
+            product.CategoryId.Should().Be(guid1);
+            product.ManufacturerId.Should().Be(guid2);
         }   
     }
 }

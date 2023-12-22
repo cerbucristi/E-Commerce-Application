@@ -17,6 +17,18 @@ namespace ECommerce.Domain.Tests
             // Assert
             result.IsSuccess.Should().BeTrue();
         }
+        [Fact]
+        public void When_CreateCategoryIsCalled_And_CategoryNameIsWhiteSpace_Then_FailureIsReturned()
+        {
+            // Arrange
+            var categoryName = " ";
+
+            // Act
+            var result = Category.Create(categoryName);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+        }
 
         [Fact]
         public void When_CreateCategoryIsNull_Then_FailureIsReturned()

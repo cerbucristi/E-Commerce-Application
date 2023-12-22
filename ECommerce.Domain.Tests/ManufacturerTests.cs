@@ -61,5 +61,17 @@ namespace ECommerce.Domain.Tests
             // Assert
             manufacturer.ManufacturerName.Should().Be("Manufacturer Test 2");
         }
+        [Fact]
+        public void When_UpdateManufacturerIsCalled_And_ManufacturerNameIsWhiteSpace()
+        {
+            // Arrange
+            var manufacturerName = "Manufacturer Test";
+            var manufacturer = Manufacturer.Create(manufacturerName).Value;
+            // Act
+            manufacturer.Update(" ");
+            // Assert
+            manufacturer.ManufacturerName.Should().Be("Manufacturer Test");
+        }
+        
     }
 }

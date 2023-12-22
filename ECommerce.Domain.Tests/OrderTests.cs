@@ -14,6 +14,7 @@ namespace ECommerce.Domain.Tests
             var result = Order.Create(customerId);
             //Assert
             result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Invalid customer id.");
         }
         [Fact]
         public void When_CreateOrderIsCalled_Then_SuccessIsReturned()
