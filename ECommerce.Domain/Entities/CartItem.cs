@@ -15,9 +15,17 @@ namespace ECommerce.Domain.Entities
         public Guid ProductId { get; private set; }
         public int Quantity { get; private set; }
 
-        public static CartItem Create(Guid productId, int quantity)
+        public static Result<CartItem> Create(Guid productId, int quantity)
         {
-            return new CartItem(productId, quantity);
+            if (quantity < 1)
+            {
+                return Result<CartItem>.Failure("Quantity cannot be less than 1.");
+            }
+            if (productId == Guid.Empty)
+            {
+                return Result<CartItem>.Failure("Invalid product id.");
+            }
+            return Result<CartItem>.Success(new CartItem(productId, quantity));
         }
     }
 }

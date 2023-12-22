@@ -21,6 +21,10 @@ namespace ECommerce.Domain.Entities
 
         public static Result<Payment> Create(Guid orderId, string paymentMethod, decimal paymentAmount)
         {
+            if (string.IsNullOrWhiteSpace(paymentMethod) || paymentAmount <= 0 || orderId == Guid.Empty)
+            {
+                return Result<Payment>.Failure("Invalid payment data.");
+            }
             return Result<Payment>.Success(new Payment(orderId, paymentMethod, paymentAmount));
         }
     }

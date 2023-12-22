@@ -21,7 +21,7 @@ namespace ECommerce.Domain.Entities
 
         public static Result<Review> Create(string reviewText, int rating, Guid productId, Guid customerId)
         {
-            if (string.IsNullOrWhiteSpace(reviewText) || rating < 1 || rating > 5)
+            if (string.IsNullOrWhiteSpace(reviewText) || rating < 1 || rating > 5 || productId == Guid.Empty || customerId == Guid.Empty)
             {
                 return Result<Review>.Failure("Invalid review data.");
             }

@@ -19,6 +19,10 @@ namespace ECommerce.Domain.Entities
 
         public static Result<User> Create(string username, string email, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return Result<User>.Failure("Username, email and password are required.");
+            }
             return Result<User>.Success(new User(username, email, password));
         }
     }

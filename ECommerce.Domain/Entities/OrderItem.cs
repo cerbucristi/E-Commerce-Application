@@ -17,9 +17,22 @@ namespace ECommerce.Domain.Entities
         public int Quantity { get; private set; }
         public decimal Price { get; private set; }
 
-        public static OrderItem Create(Guid productId, int quantity, decimal price)
+        public static Result<OrderItem> Create(Guid productId, int quantity, decimal price)
         {
-            return new OrderItem(productId, quantity, price);
+
+            if (productId == Guid.Empty)
+            {
+                return Result<OrderItem>.Failure("Invalid product id.");
+            }
+            if (quantity < 1)
+            {
+                return Result<OrderItem>.Failure("Quantity cannot be less than 1.");
+            }
+            if (price <= 0)
+            {
+                return Result<OrderItem>.Failure("Price cannot be less than or equal to 0.");
+            }
+            return Result<OrderItem>.Success(new OrderItem(productId, quantity, price));
         }
 
         public decimal GetTotal()
