@@ -38,6 +38,11 @@ builder.Services.AddHttpClient<IManufacturerDataService, ManufacturerDataService
     client.BaseAddress = new Uri("http://localhost:5255/");
 });
 
+builder.Services.AddHttpClient<IProductDataService, ProductDataService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5255/");
+});
+
 builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5255/");

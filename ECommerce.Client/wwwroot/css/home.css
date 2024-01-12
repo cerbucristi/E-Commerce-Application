@@ -1,0 +1,155 @@
+.products-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 90%;
+}
+
+.product-container {
+    display: flex;
+    flex-direction: column;
+    margin: 16px;
+    width: 400px;
+}
+
+.product-image-container {
+    align-items: center;
+    background-color: #f5f7f5;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+}
+
+.product-image {
+}
+
+.product-description-container {
+    margin-top: 4px;
+}
+
+.product-name {
+    font-family: 'Unna', serif;
+    font-size: 16px;
+    font-weight: 200;
+    margin-bottom: 10px;
+}
+
+.product-category {
+    color: rgb(77, 79, 72);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    opacity: 0.6;
+    margin: 0;
+}
+
+.product-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.product-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 400px;
+}
+
+.product-image-container {
+    align-items: center;
+    background-color: #f5f7f5;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+}
+
+.product-image {
+}
+
+.product-description-container {
+
+}
+
+.product-name {
+    font-family: 'Unna';
+    font-size: 16px;
+    font-weight: 200;
+    margin-bottom: 10px;
+}
+
+.product-category {
+    color: rgb(77, 79, 72);
+    font-family: 'DM Sans';
+    font-size: 14px;
+    opacity: 0.6;
+    margin: 0;
+}
+
+.product-price {
+    font-family: 'DM Sans';
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.product-image-container:hover .add-to-cart-container {
+    opacity: 1;
+}
+
+.add-to-cart-container {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: block;
+    padding: 8px;
+    position: absolute;
+    right: 8px;
+    opacity: 0;
+    top: 20px;
+    transition: 0.5s;
+}
+
+.add-to-cart-container:hover .add-to-cart-tooltip {
+    opacity: 1;
+}
+
+.add-to-cart-tooltip {
+    background-color: black;
+    border-radius: 4px;
+    color: white;
+    font-family: 'DM Sans';
+    font-size: 12px;
+    left: -12px;
+    opacity: 0;
+    padding: 8px 24px;
+    position: absolute;
+    text-wrap: nowrap;
+    transform: translateX(-100%);
+    transition: opacity 0.5s;
+}
+
+.add-to-cart-tooltip:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -5px;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px;
+    border-color: transparent transparent transparent black;
+}
+
+.add-to-cart-icon {
+    background-image: url("svg/add-to-cart.svg");
+    background-position: center;
+    background-size: contain;
+    display: block;
+    height: 20px;
+    width: 20px;
+}
+

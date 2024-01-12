@@ -1,7 +1,50 @@
 ﻿@page "/"
+@using ECommerce.Client.ViewModels
+@using ECommerce.Client.Services
+@using ECommerce.Client.Contracts
+@using Microsoft.AspNetCore.Components.Authorization
 
-<PageTitle>Home</PageTitle>
+<div class="products-container">
+    @foreach (var product in Products)
+    {
+        <div class="product-container">
+            <div class="product-image-container">
+                <a class="add-to-cart-container">
+                    <span class="add-to-cart-tooltip"> Add to cart </span>
+                    <span class="add-to-cart-icon"></span>
+                </a>
+                <img class="product-image" src=@product.ImageURL alt="">
+            </div>
 
-<h1>Hello, world!</h1>
+            <div class="product-description-container">
+                <h3 class="product-name">@product.Name</h3>
+                <p class="product-category">@product.Category</p>
+                <h4 class="product-price">$@product.Price</h4>
+            </div>
+        </div>
+    }
+</div>
 
-Welcome to your new app.
+@code {
+
+    string error { get; set; }
+
+    private List<ProductViewModel> Products = [];
+
+    [Inject]
+    public IProductDataService ProductDataService { get; set; }
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Products = (await ProductDataService.GetProductsAsync()).ToList();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+}
