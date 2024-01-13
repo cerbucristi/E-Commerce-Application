@@ -38,36 +38,42 @@ namespace ECommerce.Client.Services
             {
                 new ProductViewModel
                 {
+                    id = Guid.NewGuid(),
                     Category = "Air purifying", Name = "Birdnest Japanese", Price = 84.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-8-400x600.jpg"
                 },
                 new ProductViewModel
                 {
+                    id = Guid.NewGuid(),
                     Category = "Indoor Plants", Name = "Hoya Obovatum", Price = 63.00f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-5-400x600.jpg"
                 },
                 new ProductViewModel
                 {
+                    id = Guid.NewGuid(),
                     Category = "Air purifying", Name = "Monstera Deliciosa", Price = 224.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-14-400x600.jpg"
                 },
                 new ProductViewModel
-                {
+                {                    
+                    id = Guid.NewGuid(),
                     Category = "Herb seeds", Name = "Zz Plants", Price = 124.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-8-400x600.jpg"
                 },
                 new ProductViewModel
-                {
+                {   
+                    id = Guid.NewGuid(),
                     Category = "Ceramic pots", Name = "Bird of Paradise", Price = 249.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-4-400x600.jpg"
                 },
                 new ProductViewModel
-                {
+                {                    
+                    id = Guid.NewGuid(),
                     Category = "Herb seeds", Name = "Calathea Beauty Star", Price = 84.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-7-400x600.jpg"

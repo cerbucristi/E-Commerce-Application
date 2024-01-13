@@ -1,0 +1,196 @@
+@page "/product"
+@using ECommerce.Client.ViewModels
+@using ECommerce.Client.Contracts
+@using ECommerce.Client.Services
+
+<div class="">
+    <h1>Products</h1>
+    <table class="entity-table">
+        <thead class="entity-table-head">
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Products)
+        {
+            <tr>
+                <td data-label="Product Name">@product.Name</td>
+                <td data-label="Category">@product.Category</td>
+                <td data-label="Price">$@String.Format("{0:0.00}", product.Price)</td>
+                <td data-label="Actions">
+                    <span @onclick="() => EnableEditProductForm(product)" class="action edit">✏️</span>
+                    <span @onclick="() => HandleDeleteProduct(product)" class="action delete">❌</span>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button @onclick="EnableCreateProductForm" class="create-new-product-button">Create new</button>
+</div>
+
+@if (isProductFormEnabled)
+{
+    <div class="entity-form-container">
+
+        <span @onclick="CloseProductForm" class="entity-form-close-button">X</span>
+
+        <header class="entity-form-header">
+            <h1 class="entity-form-header-title">@(editingProduct ? "Edit Product" : "New Product")</h1>
+        </header>
+        <form
+            class="entity-form"
+            method="post"
+            @onsubmit="HandleCreateAndEditManufacturer">
+            <InputText
+                class="entity-form-input"
+                placeholder="Product Name"
+                @bind-Value="ProductModel.Name"/>
+            <select
+                class="entity-form-input"
+                placeholder="Category"
+                @bind="ProductModel.Category">
+                @foreach (var category in Categories)
+                {
+                    <option value="@category.CategoryName">@category.CategoryName</option>
+                }
+            </select>
+            <InputNumber
+                class="entity-form-input"
+                placeholder="Password"
+                @bind-Value="ProductModel.Price"/>
+            <InputText
+                class="entity-form-input"
+                placeholder="Image URL"
+                @bind-Value="ProductModel.ImageURL"/>
+            <label class="text-danger">@error</label>
+            <button class="entity-form-button">@(editingProduct ? "Edit Product" : "Create Product")</button>
+        </form>
+    </div>
+}
+
+@code {
+    bool isProductFormEnabled = false;
+
+    bool editingProduct = false;
+    bool creatingProduct = false;
+
+    string error { get; set; }
+
+    [SupplyParameterFromForm] public ProductViewModel ProductModel { get; set; }
+
+    private List<ProductViewModel> Products = [];
+
+    private List<CategoryViewModel> Categories = [];
+
+    [Inject] public IProductDataService ProductDataService { get; set; }
+    [Inject] public ICategoryDataService CategoryDataService { get; set; }
+
+    protected async override void OnInitialized()
+    {
+         ProductModel = new();
+         ProductModel.id = Guid.NewGuid(); // Only for mock purposes, this should be deleted
+
+         Categories = await CategoryDataService.GetCategoriesAsync();
+    }
+
+    private void EnableCreateProductForm()
+    {
+        isProductFormEnabled = true;
+        creatingProduct = true;
+    }
+
+    private void EnableEditProductForm(ProductViewModel product)
+    {
+        isProductFormEnabled = true;
+        editingProduct = true;
+        ProductModel = (ProductViewModel)product.Clone();
+    }
+
+    private void CloseProductForm()
+    {
+        isProductFormEnabled = false;
+        editingProduct = false;
+        creatingProduct = false;
+        ProductModel = new();
+        error = "";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Products = (await ProductDataService.GetProductsAsync()).ToList();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async void HandleCreateAndEditManufacturer()
+    {
+        if (!ProductModel.IsCompleted())
+        {
+            error = "No field should be empty";
+            return;
+        }
+
+        if (ProductModel.Price <= 0f)
+        {
+            error = "Price can't be lower or equal to 0";
+            return;
+        }
+
+        error = "";
+
+        try
+        {
+            if (editingProduct)
+            {
+                // Implement API Call
+                Products = Products.ConvertAll(product =>
+                {
+                    if (product.id.ToString() == ProductModel.id.ToString())
+                    {
+                        return ProductModel;
+                    }
+                    
+                    return product;
+                
+                });
+            }
+            else if (creatingProduct)
+            {
+                // Implement API Call
+                ProductModel.id = Guid.NewGuid(); // Set this to the response Guid !! Important !!
+                Products.Add(ProductModel);
+            }
+            ProductModel = new();
+            CloseProductForm();
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async void HandleDeleteProduct(ProductViewModel product)
+    {
+        // TO BE INTEGRATED WITH THE BACKEND
+        try
+        {
+            Products.Remove(product);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+}

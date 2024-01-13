@@ -1,0 +1,79 @@
+.entity-form-close-button {
+    color: white;
+    cursor: pointer;
+    font-weight: 1000;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+}
+
+.entity-form-container {
+    align-items: center;
+    background: linear-gradient(180deg, #191c83, #7579ff);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 48px;
+    position: absolute;
+    transform: translateY(10%);
+    width: 500px;
+}
+
+.entity-form-header {
+    
+}
+
+.entity-form-header-title {
+    color: #fafafa;
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
+.entity-form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.entity-form-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255,255,255,.24);
+    color: #fafafa;
+    margin: 16px 0;
+    padding: 8px;
+    transition: all .8s;
+    width: 100%;
+}
+
+.entity-form-input:focus {
+    border-bottom: 2px solid #fafafa;
+    outline: none;
+}
+
+.entity-form-input:focus::placeholder {
+    color: transparent;
+}
+
+.entity-form-input::placeholder {
+    color: #fafafa;
+}
+
+.entity-form-button {
+    border: none;
+    color: #555;
+    background-color: #fafafa;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 32px 0;
+    outline: none;
+    padding: 12px 0;
+    transition: all .8s;
+    width: 120px;
+}
+
+.entity-form-button:hover {
+    background-color: #99e7b6;
+}
