@@ -9,6 +9,6 @@ namespace ECommerce.Client.Contracts
 
         Task<ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel);
         Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel productViewModel);
-        Task<ApiResponse<ProductDto>> DeleteProductAsync(ProductViewModel productViewModel);
+        Task<ApiResponse<ProductDto>> DeleteProductAsync(Guid id);
     }
 }

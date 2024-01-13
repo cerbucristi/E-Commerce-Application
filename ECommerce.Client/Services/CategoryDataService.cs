@@ -26,9 +26,9 @@ namespace ECommerce.Client.Services
                 = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
             var result = await httpClient.PostAsJsonAsync(RequestUri, categoryViewModel);
             result.EnsureSuccessStatusCode();
-            var response = await result.Content.ReadFromJsonAsync<ApiResponse<CategoryDto>>();
-            response!.IsSuccess = result.IsSuccessStatusCode;
-            return response!;
+            var response = await result.Content.ReadFromJsonAsync<CategoryDto>();
+            // response!.IsSuccess = result.IsSuccessStatusCode;
+            return new ApiResponse<CategoryDto>(){ IsSuccess = result.IsSuccessStatusCode, Data = response};
         }
 
         public async Task<List<CategoryViewModel>> GetCategoriesAsync()

@@ -4,24 +4,26 @@ namespace ECommerce.Domain.Entities
 {
     public class Product : AuditableEntity
     {
-        private Product(string productName, string description, decimal price, int stockQuantity, Guid categoryId, Guid manufacturerId)
+        private Product(string productName, decimal price, Guid categoryId, string imageURL)
         {
             ProductId = Guid.NewGuid();
             ProductName = productName;
-            Description = description;
+            // Description = description;
             Price = price;
-            StockQuantity = stockQuantity;
+            // StockQuantity = stockQuantity;
             CategoryId = categoryId;
-            ManufacturerId = manufacturerId;
+            // ManufacturerId = manufacturerId;
+            ImageURL = imageURL;
         }
 
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; }
-        public string Description { get; private set; }
+        // public string Description { get; private set; }
         public decimal Price { get; private set; }
-        public int StockQuantity { get; private set; }
+        // public int StockQuantity { get; private set; }
         public Guid CategoryId { get; private set; }
-        public Guid ManufacturerId { get; private set; }
+        // public Guid ManufacturerId { get; private set; }
+        public string ImageURL { get; private set; }
 
        /* public void AddToCategory(Category category)
         {
@@ -42,19 +44,19 @@ namespace ECommerce.Domain.Entities
             }
         }*/
 
-        public static Result<Product> Create(string productName,string description, decimal price, int stockQuantity, Guid categoryId, Guid manufacturerId)
+        public static Result<Product> Create(string productName, decimal price, Guid categoryId, string imageURL)
         {
-            if (string.IsNullOrWhiteSpace(productName) || price <= 0 || stockQuantity < 0)
+            if (string.IsNullOrWhiteSpace(productName) || price <= 0)
             {
                 return Result<Product>.Failure("Invalid product data.");
             }
-            return Result<Product>.Success(new Product(productName, description, price, stockQuantity, categoryId, manufacturerId));
+            return Result<Product>.Success(new Product(productName, price, categoryId, imageURL));
         }
 
-        public void SetDescription(string description)
-        {
-            Description = description;
-        }
+        // public void SetDescription(string description)
+        // {
+        //     Description = description;
+        // }
 
        /* public void AddToCategory(Guid categoryId)
         {
@@ -70,14 +72,15 @@ namespace ECommerce.Domain.Entities
                 ManufacturerId = manufacturerId;
             }
         } */
-        public void Update(string productName, string description, decimal price, int stockQuantity, Guid categoryId, Guid manufacturerId)
+        public void Update(string productName, decimal price, Guid categoryId, string imageURL)
         {
             ProductName = productName;
-            Description = description;
+            // Description = description;
             Price = price;
-            StockQuantity = stockQuantity;
+            // StockQuantity = stockQuantity;
             CategoryId = categoryId;
-            ManufacturerId = manufacturerId;
+            // ManufacturerId = manufacturerId;
+            ImageURL = imageURL;
         }
     }
 }

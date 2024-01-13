@@ -5,28 +5,38 @@ namespace ECommerce.Application.Features.Products.Queries.GetAll
 {
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, GetAllProductsResponse>
     {
-        private readonly IProductRepository repository;
+        private readonly IProductRepository productRepository;
+        private readonly ICategoryRepository categoryRepository;
 
-        public GetAllProductsQueryHandler(IProductRepository repository)
+        public GetAllProductsQueryHandler(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
-            this.repository = repository;
+            this.productRepository = productRepository;
+            this.categoryRepository = categoryRepository;
         }
 
         public async Task<GetAllProductsResponse> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             GetAllProductsResponse response = new();
-            var result = await repository.GetAllAsync();
-            if (result.IsSuccess)
+            var productsResult  = await productRepository.GetAllAsync();
+            var categoriesResult = await categoryRepository.GetAllAsync();
+            if (productsResult.IsSuccess && categoriesResult.IsSuccess)
             {
-                response.Products = result.Value.Select(c => new ProductDto
+                response.Products = productsResult.Value.Select(p =>
                 {
-                    ProductId = c.ProductId,
-                    ProductName = c.ProductName,
-                    Description = c.Description,
-                    Price = c.Price,
-                    StockQuantity = c.StockQuantity,
-                    CategoryId = c.CategoryId,
-                    ManufacturerId = c.ManufacturerId,
+                    var category = categoriesResult.Value.First(category =>
+                        category.CategoryId.ToString() == p.CategoryId.ToString());
+                    return new ProductDto
+                    {
+                        ProductId = p.ProductId,
+                        ProductName = p.ProductName,
+                        // Description = c.Description,
+                        Price = p.Price,
+                        // StockQuantity = c.StockQuantity,
+                        CategoryName = category.CategoryName,
+                        CategoryId = category.CategoryId,
+                        ImageURL = p.ImageURL,
+                        // ManufacturerId = c.ManufacturerId,
+                    };
                 }).ToList();
             }
             return response;

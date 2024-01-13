@@ -14,7 +14,7 @@ namespace ECommerce.API.Controllers
 {
     [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
-    public class ProductController : ApiControllerBase
+    public class ProductsController : ApiControllerBase
     {
 
         [HttpPost]
@@ -26,7 +26,7 @@ namespace ECommerce.API.Controllers
             {
                 return BadRequest(result);
             }
-            return Ok(result);
+            return Ok(result.Product);
         }
 
         [HttpGet]
@@ -73,7 +73,7 @@ namespace ECommerce.API.Controllers
                 return BadRequest(result);
             }
 
-            return NoContent();
+            return Ok(result);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace ECommerce.API.Controllers
             {
                 return BadRequest(result);
             }
-            return Ok(result);
+            return Ok(result.Category);
         }
 
         [HttpGet]

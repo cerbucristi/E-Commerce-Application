@@ -1,3 +1,11 @@
+.entity-table-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+}
+
 .entity-table {
     border: 1px solid #ccc;
     border-collapse: collapse;
@@ -85,6 +93,7 @@
     border: none;
     color: #fafafa;
     cursor: pointer;
+    margin-top: 24px;
     padding: 8px;
     text-transform: capitalize;
 }

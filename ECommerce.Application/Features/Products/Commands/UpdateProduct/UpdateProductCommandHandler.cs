@@ -46,27 +46,34 @@ namespace ECommerce.Application.Features.Products.Commands.UpdateProduct
                     Success = false
                 };
             }
-            var manufacturer = await manufacturerRepository.FindByIdAsync(request.ManufacturerId);
-            if (!manufacturer.IsSuccess)
-            {
-                return new UpdateProductViewModel
-                {
-                    Success = false
-                };
-            }
-
-            @product.Value.Update(request.ProductName,request.Description,request.Price,request.StockQuantity,request.CategoryId,request.ManufacturerId);
+            // var manufacturer = await manufacturerRepository.FindByIdAsync(request.ManufacturerId);
+            // if (!manufacturer.IsSuccess)
+            // {
+            //     return new UpdateProductViewModel
+            //     {
+            //         Success = false
+            //     };
+            // }
+// var manufacturer = await manufacturerRepository.FindByIdAsync(request.ManufacturerId);
+            // if (!manufacturer.IsSuccess)
+            // {
+            //     return new UpdateProductViewModel
+            //     {
+            //         Success = false
+            //     };
+            // }
+            @product.Value.Update(request.ProductName,request.Price,request.CategoryId,request.ImageURL);
             await repository.UpdateAsync(@product.Value);
             return new UpdateProductViewModel
             {
                 Success = true,
                 ProductId = @product.Value.ProductId,
                 ProductName = @product.Value.ProductName,
-                Description = @product.Value.Description,
+                // Description = @product.Value.Description,
                 Price = @product.Value.Price,
-                StockQuantity = @product.Value.StockQuantity,
+                // StockQuantity = @product.Value.StockQuantity,
                 CategoryId = @product.Value.CategoryId,
-                ManufacturerId = @product.Value.ManufacturerId
+                // ManufacturerId = @product.Value.ManufacturerId
 
             };
         }

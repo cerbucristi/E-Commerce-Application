@@ -3,7 +3,7 @@
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Services
 
-<div class="">
+<div class="entity-table-container">
     <h1>Products</h1>
     <table class="entity-table">
         <thead class="entity-table-head">
@@ -18,12 +18,12 @@
         @foreach (var product in Products)
         {
             <tr>
-                <td data-label="Product Name">@product.Name</td>
-                <td data-label="Category">@product.Category</td>
+                <td data-label="Product ProductName">@product.ProductName</td>
+                <td data-label="Category">@product.CategoryName</td>
                 <td data-label="Price">$@String.Format("{0:0.00}", product.Price)</td>
                 <td data-label="Actions">
                     <span @onclick="() => EnableEditProductForm(product)" class="action edit">✏️</span>
-                    <span @onclick="() => HandleDeleteProduct(product)" class="action delete">❌</span>
+                    <span @onclick="() => HandleDeleteProduct(product.ProductId)" class="action delete">❌</span>
                 </td>
             </tr>
         }
@@ -48,11 +48,11 @@
             <InputText
                 class="entity-form-input"
                 placeholder="Product Name"
-                @bind-Value="ProductModel.Name"/>
+                @bind-Value="ProductModel.ProductName"/>
             <select
                 class="entity-form-input"
                 placeholder="Category"
-                @bind="ProductModel.Category">
+                @bind="ProductModel.CategoryName">
                 @foreach (var category in Categories)
                 {
                     <option value="@category.CategoryName">@category.CategoryName</option>
@@ -88,13 +88,21 @@
 
     [Inject] public IProductDataService ProductDataService { get; set; }
     [Inject] public ICategoryDataService CategoryDataService { get; set; }
-
-    protected async override void OnInitialized()
+    
+    protected override async Task OnInitializedAsync()
     {
-         ProductModel = new();
-         ProductModel.ProductId = Guid.NewGuid().ToString(); // Only for mock purposes, this should be deleted
-
-         Categories = await CategoryDataService.GetCategoriesAsync();
+        ProductModel = new();
+        ProductModel.ProductId = Guid.NewGuid(); // Only for mock purposes, this should be deleted
+        
+        try
+        {
+            Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
+            Products = (await ProductDataService.GetProductsAsync()).ToList();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
     }
 
     private void EnableCreateProductForm()
@@ -119,18 +127,6 @@
         error = "";
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            Products = (await ProductDataService.GetProductsAsync()).ToList();
-        }
-        catch (Exception e)
-        {
-            error = e.Message;
-        }
-    }
-
     private async void HandleCreateAndEditManufacturer()
     {
         if (!ProductModel.IsCompleted())
@@ -149,9 +145,13 @@
 
         try
         {
+            ProductModel.CategoryId = Categories.First(category => category.CategoryName == ProductModel.CategoryName).CategoryId;
+
             if (editingProduct)
             {
-                // Implement API Call
+                var result = await ProductDataService.UpdateProductAsync(ProductModel);
+                ProductModel.ProductId = result.Data!.ProductId;
+
                 Products = Products.ConvertAll(product =>
                 {
                     if (product.ProductId == ProductModel.ProductId)
@@ -165,8 +165,8 @@
             }
             else if (creatingProduct)
             {
-                // Implement API Call
-                ProductModel.ProductId = Guid.NewGuid().ToString(); // Set this to the response Guid !! Important !!
+                var result = await ProductDataService.CreateProductAsync(ProductModel);
+                ProductModel.ProductId = result.Data!.ProductId;
                 Products.Add(ProductModel);
             }
             ProductModel = new();
@@ -179,12 +179,12 @@
         }
     }
 
-    private async void HandleDeleteProduct(ProductViewModel product)
+    private async void HandleDeleteProduct(Guid id)
     {
-        // TO BE INTEGRATED WITH THE BACKEND
         try
         {
-            Products.Remove(product);
+            await ProductDataService.DeleteProductAsync(id);
+            Products = Products.Where(product => product.ProductId.ToString() != id.ToString()).ToList();
             StateHasChanged();
         }
         catch (Exception e)

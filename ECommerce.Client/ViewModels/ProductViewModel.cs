@@ -5,14 +5,15 @@ public class ProductViewModel
     public bool IsCompleted()
     {
         return !(
-            string.IsNullOrEmpty(this.Name) ||
-            string.IsNullOrEmpty(this.Category) ||
+            string.IsNullOrEmpty(this.ProductName) ||
+            string.IsNullOrEmpty(this.CategoryName) ||
             string.IsNullOrEmpty(this.ImageURL)
         );
     }
-    public string ProductId { get; set; }
-    public string Name { get; set; }
-    public string Category { get; set; }
+    public Guid ProductId { get; set; }
+    public string ProductName { get; set; }
+    public string CategoryName { get; set; }
+    public Guid CategoryId { get; set; }
     public float Price { get; set; }
     public string ImageURL { get; set; }
 

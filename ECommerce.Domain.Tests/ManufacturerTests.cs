@@ -30,7 +30,7 @@ namespace ECommerce.Domain.Tests
             var manufacturerName = "Manufacturer Test";
             var manufacturer = Manufacturer.Create(manufacturerName).Value;
             var category = Category.Create("Category Test").Value;
-            var product = Product.Create("Product Test", "Description Test", 10, 1, category.CategoryId, manufacturer.ManufacturerId).Value;
+            var product = Product.Create("Product Test", 10, category.CategoryId, "").Value;
             // Act
             manufacturer.AttachProduct(product);
             // Assert
@@ -44,7 +44,7 @@ namespace ECommerce.Domain.Tests
             var manufacturerName = "Manufacturer Test";
             var manufacturer = Manufacturer.Create(manufacturerName).Value;
             var category = Category.Create("Category Test").Value;
-            var product = Product.Create("Product Test", "Description Test", 10, 1, category.CategoryId, manufacturer.ManufacturerId).Value;
+            var product = Product.Create("Product Test", 10, category.CategoryId, "").Value;
             // Act
             manufacturer.AttachProduct(product);
             // Assert

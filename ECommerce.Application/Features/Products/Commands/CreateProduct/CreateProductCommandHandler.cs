@@ -9,13 +9,13 @@ namespace ECommerce.Application.Features.Products.Commands.CreateProduct
     public class CreateProductCommandHandler: IRequestHandler<CreateProductCommand, CreateProductCommandResponse>
     {
         private readonly IProductRepository repository;
-        private readonly IManufacturerRepository manufacturerRepository;
+        // private readonly IManufacturerRepository manufacturerRepository;
         private readonly ICategoryRepository categoryRepository;
 
-        public CreateProductCommandHandler(IProductRepository repository, IManufacturerRepository manufacturerRepository, ICategoryRepository categoryRepository)
+        public CreateProductCommandHandler(IProductRepository repository, ICategoryRepository categoryRepository)
         {
             this.repository = repository;
-            this.manufacturerRepository = manufacturerRepository;
+            // this.manufacturerRepository = manufacturerRepository;
             this.categoryRepository = categoryRepository;
         }
 
@@ -41,16 +41,16 @@ namespace ECommerce.Application.Features.Products.Commands.CreateProduct
                     Success = false
                 };
             }
-            var manufacturer = await manufacturerRepository.FindByIdAsync(request.ManufacturerId);
-            if (!manufacturer.IsSuccess)
-            {
-                return new CreateProductCommandResponse
-                {
-                    Success = false
-                };
-            }
+            // var manufacturer = await manufacturerRepository.FindByIdAsync(request.ManufacturerId);
+            // if (!manufacturer.IsSuccess)
+            // {
+            //     return new CreateProductCommandResponse
+            //     {
+            //         Success = false
+            //     };
+            // }
           
-            var product = Product.Create(request.ProductName,request.Description, request.Price,request.StockQuantity,request.CategoryId, request.ManufacturerId);
+            var product = Product.Create(request.ProductName, request.Price,request.CategoryId, request.ImageURL);
             if (!product.IsSuccess)
             {
                 return new CreateProductCommandResponse
@@ -69,12 +69,12 @@ namespace ECommerce.Application.Features.Products.Commands.CreateProduct
                 {
                     ProductId = product.Value.ProductId,
                     ProductName = product.Value.ProductName,
-                    Description = product.Value.Description,
+                    // Description = product.Value.Description,
                     Price = product.Value.Price,
-                    StockQuantity = product.Value.StockQuantity,        
+                    // StockQuantity = product.Value.StockQuantity,        
                     CategoryId = product.Value.CategoryId,
-                    ManufacturerId = product.Value.ManufacturerId
-                              
+                    // ManufacturerId = product.Value.ManufacturerId
+                    ImageURL = product.Value.ImageURL
                 }
             };
         }
