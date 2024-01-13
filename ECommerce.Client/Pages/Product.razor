@@ -92,7 +92,7 @@
     protected async override void OnInitialized()
     {
          ProductModel = new();
-         ProductModel.id = Guid.NewGuid(); // Only for mock purposes, this should be deleted
+         ProductModel.ProductId = Guid.NewGuid().ToString(); // Only for mock purposes, this should be deleted
 
          Categories = await CategoryDataService.GetCategoriesAsync();
     }
@@ -154,7 +154,7 @@
                 // Implement API Call
                 Products = Products.ConvertAll(product =>
                 {
-                    if (product.id.ToString() == ProductModel.id.ToString())
+                    if (product.ProductId == ProductModel.ProductId)
                     {
                         return ProductModel;
                     }
@@ -166,7 +166,7 @@
             else if (creatingProduct)
             {
                 // Implement API Call
-                ProductModel.id = Guid.NewGuid(); // Set this to the response Guid !! Important !!
+                ProductModel.ProductId = Guid.NewGuid().ToString(); // Set this to the response Guid !! Important !!
                 Products.Add(ProductModel);
             }
             ProductModel = new();

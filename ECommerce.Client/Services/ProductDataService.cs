@@ -38,42 +38,47 @@ namespace ECommerce.Client.Services
             {
                 new ProductViewModel
                 {
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
                     Category = "Air purifying", Name = "Birdnest Japanese", Price = 84.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-8-400x600.jpg"
                 },
                 new ProductViewModel
                 {
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
+
                     Category = "Indoor Plants", Name = "Hoya Obovatum", Price = 63.00f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-5-400x600.jpg"
                 },
                 new ProductViewModel
                 {
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
+
                     Category = "Air purifying", Name = "Monstera Deliciosa", Price = 224.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-14-400x600.jpg"
                 },
                 new ProductViewModel
                 {                    
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
+
                     Category = "Herb seeds", Name = "Zz Plants", Price = 124.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-8-400x600.jpg"
                 },
                 new ProductViewModel
                 {   
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
+
                     Category = "Ceramic pots", Name = "Bird of Paradise", Price = 249.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-4-400x600.jpg"
                 },
                 new ProductViewModel
                 {                    
-                    id = Guid.NewGuid(),
+                    ProductId = Guid.NewGuid().ToString(),
+
                     Category = "Herb seeds", Name = "Calathea Beauty Star", Price = 84.90f,
                     ImageURL =
                         "https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/08/plants-ecommerce-product-featured-img-7-400x600.jpg"
@@ -81,6 +86,57 @@ namespace ECommerce.Client.Services
             };
 
             return products;
+        }
+        
+        public async Task<ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel)
+        {
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+            var result = await httpClient.PostAsJsonAsync(RequestUri, productViewModel);
+            result.EnsureSuccessStatusCode();
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<ProductDto>>();
+            response!.IsSuccess = result.IsSuccessStatusCode;
+            return response!;
+        }
+
+        public async Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel product)
+        {
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            var result = await httpClient.PutAsJsonAsync($"{RequestUri}/{product.ProductId}", product);
+            result.EnsureSuccessStatusCode();
+
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<ProductDto>>();
+            response!.IsSuccess = result.IsSuccessStatusCode;
+
+            return response!;
+        }
+
+        public async Task<ApiResponse<ProductDto>> DeleteProductAsync(ProductViewModel product)
+        {
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            var result = await httpClient.DeleteAsync($"{RequestUri}/{product.ProductId}");
+            result.EnsureSuccessStatusCode();
+
+            if (result.IsSuccessStatusCode)
+            {
+                return new ApiResponse<ProductDto>
+                {
+                    IsSuccess = true,
+                    Message = "Product deleted successfully"
+                };
+            }
+            else
+            {
+                return new ApiResponse<ProductDto>
+                {
+                    IsSuccess = false,
+                    Message = $"Failed to delete product. Status code: {result.StatusCode}",
+                };
+            }
         }
     }
 }
