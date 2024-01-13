@@ -6,5 +6,9 @@ namespace ECommerce.Client.Contracts
     public interface IProductDataService
     {
         Task<List<ProductViewModel>> GetProductsAsync();
+
+        Task<ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel);
+        Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel productViewModel);
+        Task<ApiResponse<ProductDto>> DeleteProductAsync(ProductViewModel productViewModel);
     }
 }
