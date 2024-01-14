@@ -2,20 +2,20 @@ using ECommerce.API.Utility;
 using ECommerce.Application.Contracts.Interfaces;
 using ECommerce.Application.Models;
 using ECommerce.Identity;
-using ECommerce.API.Utility;
 using ECommerce.Application;
-using ECommerce.Application.Contracts.Interfaces;
-using ECommerce.Application.Models;
-using ECommerce.Infrastructure;
-using ECommerce.Identity;
 using Infrastructure;
 using Microsoft.OpenApi.Models;
 using WebAPI.Services;
+using ECommerce.API.Contracts;
+using ECommerce.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+//adding mail service details
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IMailService, MailService>();
 // Add services to the container.
 builder.Services.AddInfrastrutureToDI(
     builder.Configuration);
