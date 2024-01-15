@@ -26,6 +26,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Application", "ECommerce.Application\ECommerce.Application.csproj", "{D645FDE1-52CF-4B6B-AF31-B47F147C610E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-Commerce-Application.API", "E-Commerce-Application.API\E-Commerce-Application.API.csproj", "{F4D43EB2-7AE4-4122-850E-441801551F4B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EF8B6A1B-D088-431C-9B1A-E454F12A36B3} = {EF8B6A1B-D088-431C-9B1A-E454F12A36B3}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Identity", "ECommerce.Identity\ECommerce.Identity.csproj", "{32F10D05-D79C-472D-AA86-852EEE7BB581}"
 EndProject
@@ -33,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Client", "ECommer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Domain.Tests", "ECommerce.Domain.Tests\ECommerce.Domain.Tests.csproj", "{712CFF58-73E5-43C4-93D6-50B16E300574}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Application.Tests", "ECommerce.Application.Tests\ECommerce.Application.Tests.csproj", "{1BD6DD54-4D0F-44F5-A10C-13638F19FE7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Application.Tests", "ECommerce.Application.Tests\ECommerce.Application.Tests.csproj", "{1BD6DD54-4D0F-44F5-A10C-13638F19FE7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
