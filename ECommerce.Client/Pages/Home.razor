@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IShoppingCartService ShoppingCartService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
@@ -11,7 +12,7 @@
             <div class="product-image-container">
                 <a class="add-to-cart-container">
                     <span class="add-to-cart-tooltip"> Add to cart </span>
-                    <span class="add-to-cart-icon"></span>
+                    <span @onclick="()=>AddToCart(product)" class="add-to-cart-icon"></span>
                 </a>
                 <img class="product-image" src=@product.ImageURL alt="">
             </div>
@@ -27,6 +28,7 @@
 
 @code {
 
+
     string error { get; set; }
 
     private List<ProductViewModel> Products = [];
@@ -34,7 +36,7 @@
     [Inject]
     public IProductDataService ProductDataService { get; set; }
 
-    
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -46,5 +48,21 @@
             error = e.Message;
         }
     }
+
+    private async Task AddToCart(ProductViewModel product)
+    {
+        CartItemViewModel cartItem = new CartItemViewModel
+            {
+                ProductId = product.ProductId,
+                Quantity = 1,
+                Price = product.Price,
+                ProductName = product.ProductName,  // Assuming CartItemViewModel has a ProductName property
+                ProductCategory = product.CategoryName,  // Assuming CartItemViewModel has a ProductCategory property
+                                                         // Set other properties based on your requirements
+            };
+
+        await ShoppingCartService.AddToCart(cartItem);
+    }
+
 
 }
