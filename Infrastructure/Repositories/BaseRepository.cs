@@ -42,6 +42,16 @@ namespace Infrastructure.Repositories
             }
             return Result<T>.Success(result);
         }
+        public async Task<Result<IReadOnlyList<T>>> GetByUserIdAsync(Guid userId)
+        {
+            var result = await context.Set<T>()
+                .Where(entry => EF.Property<Guid>(entry, "UserId") == userId)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return Result<IReadOnlyList<T>>.Success(result);
+        }
+
 
         public virtual async Task<Result<IReadOnlyList<T>>> GetAllAsync()
         {

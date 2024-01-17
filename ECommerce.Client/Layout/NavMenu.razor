@@ -1,4 +1,4 @@
-﻿
+﻿@inject IShoppingCartService ShoppingCartService
 @using ECommerce.Client.Auth
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Auth
@@ -12,7 +12,6 @@
         <NavLink class="navbar-option" href="/">Home</NavLink>
     </ul>
 
-
     <ul class="navbar-right-container">
         <CascadingAuthenticationState>
             <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
@@ -23,31 +22,54 @@
                             <NavLink href="/category">Categories</NavLink>
                             <NavLink href="/manufacturer">Manufacturers</NavLink>
                             <NavLink href="/product">Products</NavLink>
+                            <NavLink href="/adminorders">Orders</NavLink>
                         </div>
                     </div>
-                    <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
-                </Authorized>
+                    <NavLink class="navbar-option" href="/cart">ShoppingCart (@cartItemsCount)</NavLink>
+                        <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavLink class="navbar-option" href="/login">Login</NavLink>
+                    </NotAuthorized>
+                </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+            </CascadingAuthenticationState>
+        </ul>
+    </nav>
 
-                <NotAuthorized>
-                    <NavLink class="navbar-option" href="/login">Login</NavLink>
-                </NotAuthorized>
-            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-        </CascadingAuthenticationState>
-    </ul>
-</nav>
+    @code {
+    private int cartItemsCount = 0;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCartItemsCount();
+    }
 
-@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Only fetch the cart items count after the initial render
+            await LoadCartItemsCount();
+        }
+    }
+
+    private async Task LoadCartItemsCount()
+    {
+        var cartItems = await ShoppingCartService.GetCartItems();
+        cartItemsCount = cartItems.Sum(item => item.Quantity);
+        StateHasChanged(); // Trigger a re-render
+    }
+
     private async void OnLogout()
     {
         try
         {
             await authStateProvider.Logout();
-            
             navigationManager.NavigateTo("/");
         }
         catch (Exception e)
         {
+            // Handle the exception, if needed
         }
     }
 }

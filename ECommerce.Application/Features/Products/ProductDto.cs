@@ -20,6 +20,7 @@ namespace ECommerce.Application.Features.Products
             public Guid CategoryId { get; set; }
             // public Manufacturer Manufacturer { get; set; }
             public string ImageURL { get; set; }
+        public bool Wishlist { get; set; }
 
-        }
+    }
     }
