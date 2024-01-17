@@ -6,6 +6,7 @@ namespace ECommerce.Application.Persistence
     {
         Task<Result<T>> UpdateAsync(T entity);
         Task<Result<T>> FindByIdAsync(Guid id);
+        Task<Result<IReadOnlyList<T>>> GetByUserIdAsync (Guid userId);
         Task<Result<T>> AddAsync(T entity);
         Task<Result<T>> DeleteAsync(Guid id);
         Task<Result<IReadOnlyList<T>>> GetPagedReponseAsync(int page, int size);

@@ -48,6 +48,11 @@ builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client
 {
     client.BaseAddress = new Uri("http://localhost:5255/");
 });
+builder.Services.AddHttpClient<IWishlistDataService, WishlistDataService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5255/");
+});
+
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {

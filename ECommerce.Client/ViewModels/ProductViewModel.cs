@@ -16,6 +16,7 @@ public class ProductViewModel
     public Guid CategoryId { get; set; }
     public float Price { get; set; }
     public string ImageURL { get; set; }
+    public bool Wishlist { get; set; }
 
     public object Clone()
     {

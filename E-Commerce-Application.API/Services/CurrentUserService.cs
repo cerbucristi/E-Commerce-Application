@@ -26,7 +26,8 @@ namespace WebAPI.Services
 
         public string GetCurrentUserId()
         {
-            return GetCurrentClaimsPrincipal()?.GetObjectId()!;
+            var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
+            return userIdClaim?.Value;
         }
     }
 }
