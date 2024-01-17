@@ -1,0 +1,91 @@
+﻿@page "/cart"
+@inject IShoppingCartService ShoppingCartService
+@inject NavigationManager NavigationManager
+@using ECommerce.Client.ViewModels
+@using ECommerce.Client.Services
+@using ECommerce.Client.Contracts
+@using Microsoft.AspNetCore.Components.Authorization
+
+<div class="entity-table-container">
+    <h1>Shopping Cart</h1>
+    <table class="entity-table">
+        <thead class="entity-table-head">
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in cartItems)
+            {
+                <tr>
+                    <td data-label="Product Name">@item.ProductName</td>
+                    <td data-label="Category">@item.ProductCategory</td>
+                    <td data-label="Price">$@String.Format("{0:0.00}", item.Price * item.Quantity)</td>
+                    <td data-label="Quantity">@item.Quantity</td>
+                    <td data-label="Actions">
+                        <button @onclick="()=>IncreaseQuantity(item)" class="action">+</button>
+                        <button @onclick="()=>DecreaseQuantity(item)" class="action">-</button>
+                        <span @onclick="()=>RemoveCartItem(item)" class="action delete">❌</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+                <td data-label="Final Price">
+                    $@String.Format("{0:0.00}", cartItems.Sum(item => item.Price * item.Quantity))
+                </td>
+                <td></td>
+                <td data-label="Actions">
+                    <button @onclick="GoToOrder" class="action goto-order">Order</button>
+                    <button @onclick="ClearShoppingCart" class="action clear-cart">Clear Cart</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@code {
+    private List<CartItemViewModel> cartItems = new List<CartItemViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cartItems = await ShoppingCartService.GetCartItems();
+    }
+
+    protected async Task IncreaseQuantity(CartItemViewModel item)
+    {
+        await ShoppingCartService.IncreaseQuantity(item);
+        // Update the local quantity
+        item.Quantity++;
+    }
+
+    protected async Task DecreaseQuantity(CartItemViewModel item)
+    {
+        await ShoppingCartService.DecreaseQuantity(item);
+        // Update the local quantity
+        item.Quantity--;
+    }
+
+    protected async Task RemoveCartItem(CartItemViewModel item)
+    {
+        await ShoppingCartService.RemoveFromCart(item);
+        cartItems.Remove(item);
+    }
+
+    protected void GoToOrder()
+    {
+        NavigationManager.NavigateTo("/order");
+    }
+
+    protected async Task ClearShoppingCart()
+    {
+        await ShoppingCartService.ClearCart();
+        cartItems.Clear();
+    }
+}

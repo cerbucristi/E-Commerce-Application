@@ -16,7 +16,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddAuthorizationCore();
 
-
 builder.Services.AddBlazoredLocalStorage(config =>
 {
     config.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
@@ -32,6 +31,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<CustomStateProvider>();
 //builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
 
 builder.Services.AddHttpClient<IManufacturerDataService, ManufacturerDataService>(client =>
 {
@@ -57,6 +58,7 @@ builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(cl
 {
     client.BaseAddress = new Uri("http://localhost:5255/");
 });
+
 
 
 await builder.Build().RunAsync();

@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject IWishlistDataService WishlistDataService
+@inject IShoppingCartService ShoppingCartService
+
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
@@ -17,7 +19,7 @@
             <div class="product-image-container">
                 <a class="add-to-cart-container">
                     <span class="add-to-cart-tooltip"> Add to cart </span>
-                    <span class="add-to-cart-icon"></span>
+                    <span @onclick="()=>AddToCart(product)" class="add-to-cart-icon"></span>
                 </a>
                 <img class="product-image" src=@product.ImageURL alt="">
             </div>
@@ -99,4 +101,21 @@
     {
         return Products.FirstOrDefault(p => p.ProductId == productId)?.Wishlist == true ? "❤️" : "🤍";
     }
+      
+    private async Task AddToCart(ProductViewModel product)
+    {
+        CartItemViewModel cartItem = new CartItemViewModel
+            {
+                ProductId = product.ProductId,
+                Quantity = 1,
+                Price = product.Price,
+                ProductName = product.ProductName,  
+                ProductCategory = product.CategoryName,  
+                                                        
+            };
+
+        await ShoppingCartService.AddToCart(cartItem);
+    }
+
+
 }
