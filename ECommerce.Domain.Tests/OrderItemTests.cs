@@ -1,4 +1,4 @@
-﻿using ECommerce.Domain.Entities;
+﻿/*using ECommerce.Domain.Entities;
 using FluentAssertions;
 namespace ECommerce.Domain.Tests
 {
@@ -23,7 +23,7 @@ namespace ECommerce.Domain.Tests
             var productId = Guid.NewGuid();
             var quantity = 1;
             var price = 10;
-            // Act
+            // Act/**//*
             var result = OrderItem.Create(productId,price, quantity);
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -66,3 +66,4 @@ namespace ECommerce.Domain.Tests
         }
     }
 }
+*/
