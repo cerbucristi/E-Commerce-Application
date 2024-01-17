@@ -1,4 +1,4 @@
-﻿/*using ECommerce.Domain.Common;
+﻿using ECommerce.Domain.Common;
 using ECommerce.Domain.Entities;
 using FluentAssertions;
 namespace ECommerce.Domain.Tests
@@ -55,4 +55,3 @@ namespace ECommerce.Domain.Tests
         }
     }
 }
-*/

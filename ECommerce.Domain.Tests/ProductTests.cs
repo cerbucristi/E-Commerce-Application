@@ -1,4 +1,4 @@
-﻿/*using ECommerce.Domain.Entities;
+﻿using ECommerce.Domain.Entities;
 using FluentAssertions;
 using Newtonsoft.Json.Bson;
 namespace ECommerce.Domain.Tests
@@ -88,4 +88,3 @@ namespace ECommerce.Domain.Tests
         }   
     }
 }
-*/
