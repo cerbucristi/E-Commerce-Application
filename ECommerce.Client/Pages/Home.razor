@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IWishlistDataService WishlistDataService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
@@ -8,6 +9,11 @@
     @foreach (var product in Products)
     {
         <div class="product-container">
+            <div class="wishlist-container" @onclick="() => ToggleWishlist(product.ProductId)">
+                <span class="wishlist-tooltip"> Add to wishlist </span>
+                <span class="wishlist-icon">@GetHeartIcon(product.ProductId)</span>
+            </div>
+
             <div class="product-image-container">
                 <a class="add-to-cart-container">
                     <span class="add-to-cart-tooltip"> Add to cart </span>
@@ -26,15 +32,13 @@
 </div>
 
 @code {
-
     string error { get; set; }
 
-    private List<ProductViewModel> Products = [];
+    private List<ProductViewModel> Products = new List<ProductViewModel>();
 
     [Inject]
     public IProductDataService ProductDataService { get; set; }
 
-    
     protected override async Task OnInitializedAsync()
     {
         try
@@ -47,4 +51,52 @@
         }
     }
 
+    private async void ToggleWishlist(Guid productId)
+    {
+        try
+        {
+            var product = Products.FirstOrDefault(p => p.ProductId == productId);
+
+            if (product != null)
+            {
+                var isProductInWishlist = product.Wishlist;
+
+                if (isProductInWishlist)
+                {
+                    await WishlistDataService.RemoveFromWishlistAsync(productId);
+                }
+                else
+                {
+                    await WishlistDataService.AddToWishlistAsync(productId);
+                }
+
+                await RefreshProducts();
+
+                StateHasChanged();
+            }
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    private async Task RefreshProducts()
+    {
+        try
+        {
+            var updatedProducts = await ProductDataService.GetProductsAsync();
+
+            Products.Clear();
+            Products.AddRange(updatedProducts);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private string GetHeartIcon(Guid productId)
+    {
+        return Products.FirstOrDefault(p => p.ProductId == productId)?.Wishlist == true ? "❤️" : "🤍";
+    }
 }

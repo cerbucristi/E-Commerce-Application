@@ -6,7 +6,9 @@ namespace Infrastructure
 {
     public class ECommerceContext : DbContext
     {
+        public ECommerceContext(DbContextOptions<ECommerceContext> options) : base(options) { }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -14,7 +16,7 @@ namespace Infrastructure
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<User> Users { get; set; }
-        public ECommerceContext(DbContextOptions<ECommerceContext> options) : base(options) { }
+        
 
     }
 }

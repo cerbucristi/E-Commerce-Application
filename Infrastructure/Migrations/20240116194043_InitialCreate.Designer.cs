@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20240115152848_InitialCreate")]
+    [Migration("20240116194043_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -361,6 +361,35 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Entities.Wishlist", b =>
+                {
+                    b.Property<Guid>("WishlistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("WishlistId");
+
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.CartItem", b =>

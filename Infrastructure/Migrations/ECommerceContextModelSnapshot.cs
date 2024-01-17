@@ -360,6 +360,35 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Entities.Wishlist", b =>
+                {
+                    b.Property<Guid>("WishlistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("WishlistId");
+
+                    b.ToTable("Wishlists");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Entities.CartItem", b =>
                 {
                     b.HasOne("ECommerce.Domain.Entities.ShoppingCart", null)

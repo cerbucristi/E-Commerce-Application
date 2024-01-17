@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Contracts.Identity;
 using ECommerce.Application.Models.Identity;
+using ECommerce.Domain.Entities;
 using ECommerce.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -67,7 +68,8 @@ namespace ECommerce.Identity.Services
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
-            string token = GenerateToken(authClaims);
+
+            string token = GenerateToken(authClaims, user);
             return (1, token);
         }
 
@@ -77,7 +79,7 @@ namespace ECommerce.Identity.Services
             return (1, "User logged out successfully!");
         }
 
-        private string GenerateToken(IEnumerable<Claim> claims)
+        private string GenerateToken(IEnumerable<Claim> claims, ApplicationUser user)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
 
@@ -89,6 +91,8 @@ namespace ECommerce.Identity.Services
                 SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
                 Subject = new ClaimsIdentity(claims)
             };
+            var userIdClaim = new Claim(ClaimTypes.NameIdentifier, user.Id);
+            tokenDescriptor.Subject.AddClaim(userIdClaim);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
