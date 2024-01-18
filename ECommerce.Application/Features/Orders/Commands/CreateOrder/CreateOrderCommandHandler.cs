@@ -14,7 +14,7 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
         private readonly ICurrentUserService _currentUserService;
         private readonly IMailService _mailService;
 
-        public CreateOrderCommandHandler(IOrderRepository orderRepository, IProductRepository productRepository, ICurrentUserService currentUserService, IMailService mailService )
+        public CreateOrderCommandHandler(IOrderRepository orderRepository, IProductRepository productRepository, ICurrentUserService currentUserService, IMailService mailService)
         {
             this.orderRepository = orderRepository;
             this.productRepository = productRepository;

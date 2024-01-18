@@ -31,7 +31,7 @@ namespace WebAPI.Services
         }
         public string GetCurrentUserEmail()
         {
-            var userEmailClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
+            var userEmailClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email);
             return userEmailClaim?.Value;
         }
     }
