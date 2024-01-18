@@ -1,9 +1,12 @@
 ﻿using ECommerce.Domain.Common;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Domain.Entities
 {
     public class OrderItem : AuditableEntity
     {
+
+        [JsonConstructor]
         private OrderItem(Guid productId, int quantity, decimal price)
         {
             OrderItemId = Guid.NewGuid();
