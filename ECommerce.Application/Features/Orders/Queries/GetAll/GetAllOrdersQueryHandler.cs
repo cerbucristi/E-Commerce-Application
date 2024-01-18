@@ -37,6 +37,7 @@ namespace ECommerce.Application.Features.Orders.Queries.GetAll
                     OrderStatus = o.OrderStatus,
                     Payment = o.Payment,
                     OrderItems = o.OrderItems,
+                    TotalPrice = o.TotalPrice
                 }).ToList();
             }
            

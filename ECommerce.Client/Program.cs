@@ -8,6 +8,7 @@ using ECommerce.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Blazored.Toast;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -26,14 +27,17 @@ builder.Services.AddBlazoredLocalStorage(config =>
     config.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
     config.JsonSerializerOptions.WriteIndented = false;
 });
-
+builder.Services.AddBlazoredToast();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<CustomStateProvider>();
 //builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
-
+builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5255/");
+});
 builder.Services.AddHttpClient<IManufacturerDataService, ManufacturerDataService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5255/");

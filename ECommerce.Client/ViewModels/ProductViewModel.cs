@@ -14,7 +14,7 @@ public class ProductViewModel
     public string ProductName { get; set; }
     public string CategoryName { get; set; }
     public Guid CategoryId { get; set; }
-    public float Price { get; set; }
+    public decimal Price { get; set; }
     public string ImageURL { get; set; }
     public bool Wishlist { get; set; }
 

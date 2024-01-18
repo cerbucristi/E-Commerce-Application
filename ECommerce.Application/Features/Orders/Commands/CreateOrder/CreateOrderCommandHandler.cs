@@ -110,7 +110,8 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
                         OrderDate = order.Value.OrderDate,
                         OrderStatus = order.Value.OrderStatus,
                         OrderItems = order.Value.OrderItems,
-                        Payment = order.Value.Payment
+                        Payment = order.Value.Payment,
+                        TotalPrice = order.Value.TotalPrice
                     }
                 };
             }

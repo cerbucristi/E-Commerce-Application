@@ -16,5 +16,6 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
         public string PhoneNumber { get; set; }
         public List<OrderItem> OrderItems { get; set; }
         public string Payment { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

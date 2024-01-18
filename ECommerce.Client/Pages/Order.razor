@@ -1,9 +1,13 @@
 ﻿@page "/order"
 @inject IShoppingCartService ShoppingCartService
+@inject IOrderService OrderService
+@inject IToastService ToastService
+@using Blazored.Toast.Services
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Json
 
 <style>
     .mandatory::before {
@@ -14,35 +18,82 @@
 
 <div>
     <h1>Order</h1>
+
     <div class="form-group">
         <label for="first-name">First Name<span class="mandatory"></span></label>
-        <input type="text" class="form-control" id="first-name" placeholder="Enter First Name" required />
+        <input type="text" class="form-control" id="first-name" @bind="FirstName" placeholder="Enter First Name" required />
     </div>
+
     <div class="form-group">
         <label for="last-name">Last Name<span class="mandatory"></span></label>
-        <input type="text" class="form-control" id="last-name" placeholder="Enter Last Name" required />
+        <input type="text" class="form-control" id="last-name" @bind="LastName" placeholder="Enter Last Name" required />
     </div>
+
     <div class="form-group">
         <label for="address">Address<span class="mandatory"></span></label>
-        <input type="text" class="form-control" id="address" placeholder="Enter Address" required />
+        <input type="text" class="form-control" id="address" @bind="Address" placeholder="Enter Address" required />
     </div>
+
     <div class="form-group">
         <label for="phone">Phone<span class="mandatory"></span></label>
-        <input type="text" class="form-control" id="phone" placeholder="Enter Phone" required />
+        <input type="text" class="form-control" id="phone" @bind="PhoneNumber" placeholder="Enter Phone" required />
     </div>
 
     <div class="form-group">
         <label for="payment">Payment<span class="mandatory"></span></label>
-        <select class="form-control" id="payment" required>
+        <select class="form-control" id="payment" @bind="PaymentMethod" required>
             <option value="" disabled selected>Select Payment Method</option>
-            <option>Cash</option>
-            <option>Card</option>
+            <option>cash</option>
+            <option>card</option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-primary" @onclick="SubmitForm">Submit</button>
 </div>
 
 @code {
+    private string FirstName { get; set; }
+    private string LastName { get; set; }
+    private string Address { get; set; }
+    private string PhoneNumber { get; set; }
+    private string PaymentMethod { get; set; }
+    private List<CartItemViewModel> cartItems = new List<CartItemViewModel>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        cartItems = await ShoppingCartService.GetCartItems();
+    }
+
+    private async Task SubmitForm()
+    {
+        // Create an order object with the form data
+        var order = new OrderViewModel
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                Address = Address,
+                PhoneNumber = PhoneNumber,
+                PaymentMethod = PaymentMethod,
+                OrderItems = cartItems.Select(item => new OrderItemViewModel
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                }).ToList()
+            };
+
+        // Send the POST request to the server
+        var success = await OrderService.PlaceOrder(order);
+
+        // Show a toast message based on the result
+        if (success.IsSuccess)
+        {
+            ToastService.ShowSuccess("Order placed successfully!");
+            // Optionally, you can redirect to a confirmation page
+        }
+        else
+        {
+            ToastService.ShowError("Failed to place the order. Please try again.");
+        }
+    }
 }

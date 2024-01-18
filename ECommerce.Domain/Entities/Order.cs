@@ -29,6 +29,7 @@ namespace ECommerce.Domain.Entities
         public string OrderStatus { get; private set; }
         public List<OrderItem> OrderItems { get; private set; }
         public string Payment { get; private set; }
+        public decimal TotalPrice { get; private set; }
 
 
         public static Result<Order> Create(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment, List<OrderItem> orderItems)
