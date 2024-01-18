@@ -91,6 +91,9 @@ namespace ECommerce.Identity.Services
                 SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
                 Subject = new ClaimsIdentity(claims)
             };
+
+            tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+
             var userIdClaim = new Claim(ClaimTypes.NameIdentifier, user.Id);
             tokenDescriptor.Subject.AddClaim(userIdClaim);
 
@@ -98,5 +101,6 @@ namespace ECommerce.Identity.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
     }
 }
