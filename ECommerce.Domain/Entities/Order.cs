@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Common;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace ECommerce.Domain.Entities
 {
@@ -29,6 +30,7 @@ namespace ECommerce.Domain.Entities
         public List<OrderItem> OrderItems { get; private set; }
         public string Payment { get; private set; }
 
+
         public static Result<Order> Create(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment, List<OrderItem> orderItems)
         {
             if (customerId == Guid.Empty)
@@ -51,6 +53,10 @@ namespace ECommerce.Domain.Entities
             return Result<Order>.Success(new Order(customerId, lastName, firstName, phoneNumber, address, payment));
         }
 
+        public void Update(string orderStatus)
+        {
+            OrderStatus = orderStatus;
+        }
         public void AddOrderItem(OrderItem orderItem)
         {
             OrderItems.Add(orderItem);

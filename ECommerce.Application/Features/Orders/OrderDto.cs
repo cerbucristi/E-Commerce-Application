@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Application.Features.Orders
 {
-    internal class OrderDto
+    public class OrderDto
     {
         public Guid OrderId { get; set; }
         public string LastName { get; set; }
