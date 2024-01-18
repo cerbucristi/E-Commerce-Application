@@ -29,7 +29,6 @@ public class WishlistDataService : IWishlistDataService
         }
         catch (Exception)
         {
-            // Tratează erorile aici
             return new List<Guid>();
         }
     }
