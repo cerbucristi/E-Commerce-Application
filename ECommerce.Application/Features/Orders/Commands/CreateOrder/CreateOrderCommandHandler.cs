@@ -2,6 +2,8 @@
 using ECommerce.Domain.Entities;
 using MediatR;
 using ECommerce.Application.Contracts.Interfaces;
+using ECommerce.Application.Contracts;
+using ECommerce.Application.Models;
 
 namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
 {
@@ -10,6 +12,7 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
         private readonly IProductRepository productRepository;
         private readonly IOrderRepository orderRepository;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IMailService _mailService;
 
         public CreateOrderCommandHandler(IOrderRepository orderRepository, IProductRepository productRepository, ICurrentUserService currentUserService)
         {
@@ -82,6 +85,15 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
             try
             {
                 await orderRepository.AddAsync(order.Value);
+
+                //sending the confirmation mail
+                MailData mail = new MailData();
+                mail.EmailToId = _currentUserService.GetCurrentUserEmail();
+                mail.EmailToName = request.LastName + " " + request.FirstName;
+                mail.EmailSubject = "E Commerce Order Confirm";
+                mail.EmailBody = "The order with id " + order.Value.OrderId + " was successfully placed";
+
+                _mailService.SendMail(mail);
 
                 return new CreateOrderCommandResponse
                 {

@@ -1,4 +1,4 @@
-﻿namespace ECommerce.API.Utility
+﻿namespace ECommerce.Application.Models
 {
     public class MailSettings
     {

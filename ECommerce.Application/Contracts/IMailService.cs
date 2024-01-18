@@ -1,8 +1,6 @@
-﻿
+﻿using ECommerce.Application.Models;
 
-using ECommerce.API.Utility;
-
-namespace ECommerce.API.Contracts
+namespace ECommerce.Application.Contracts
 {
     public interface IMailService
     {

@@ -7,5 +7,7 @@ namespace ECommerce.Application.Contracts.Interfaces
         string UserId { get; }
         ClaimsPrincipal GetCurrentClaimsPrincipal();
         string GetCurrentUserId();
+
+        string GetCurrentUserEmail();
     }
 }

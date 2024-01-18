@@ -1,10 +1,10 @@
-﻿using ECommerce.API.Contracts;
-using ECommerce.API.Utility;
+﻿using ECommerce.Application.Contracts;
+using ECommerce.Application.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace ECommerce.API.Services
+namespace ECommerce.Infrastructure.Services
 {
     public class MailService : IMailService
     {

@@ -6,8 +6,8 @@ using ECommerce.Application;
 using Infrastructure;
 using Microsoft.OpenApi.Models;
 using WebAPI.Services;
-using ECommerce.API.Contracts;
-using ECommerce.API.Services;
+using ECommerce.Application.Contracts;
+using ECommerce.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
