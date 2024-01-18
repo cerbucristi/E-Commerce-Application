@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECommerce.Domain.Entities;
 
 namespace ECommerce.Application.Persistence
 {
-    internal interface IOrderRepository
+    public interface IOrderRepository : IAsyncRepository<Order>
     {
     }
 }
