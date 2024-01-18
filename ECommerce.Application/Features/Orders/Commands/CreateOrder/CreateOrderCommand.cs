@@ -14,7 +14,6 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
         public string FirstName { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public Guid CustomerId { get; set; }   
         public List<OrderItem> OrderItems { get; set; }
         public string Payment { get; set; }
     }

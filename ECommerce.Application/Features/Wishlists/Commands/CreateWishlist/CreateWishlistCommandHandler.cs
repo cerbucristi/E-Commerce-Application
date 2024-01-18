@@ -35,6 +35,7 @@ namespace ECommerce.Application.Features.Wishlists.Commands.CreateWishlist
             }
 
             var product = await productRepository.FindByIdAsync(request.ProductId);
+       
             if (!product.IsSuccess)
             {
                 return new CreateWishlistCommandResponse
@@ -42,6 +43,7 @@ namespace ECommerce.Application.Features.Wishlists.Commands.CreateWishlist
                     Success = false
                 };
             }
+
 
             var userIdAsString = _currentUserService.GetCurrentUserId();
             Guid userId = Guid.Parse(userIdAsString);

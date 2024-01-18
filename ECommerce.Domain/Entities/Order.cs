@@ -14,7 +14,7 @@ namespace ECommerce.Domain.Entities
             Address = address;
             OrderDate = DateTime.UtcNow;
             OrderStatus = "Pending";
-            OrderItems = new List<OrderItem>();
+            OrderItems =  new List<OrderItem>();
             Payment = payment;
         }
 
