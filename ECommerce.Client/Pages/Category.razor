@@ -83,8 +83,9 @@
     {
         try
         {
-            await CategoryDataService.CreateCategoryAsync(NewCategory);
-            Categories.Add(NewCategory);
+            var result = await CategoryDataService.CreateCategoryAsync(NewCategory);
+            NewCategory.CategoryId = result.Data.CategoryId;
+            Categories.Add(NewCategory);            
             NewCategory = new();
             StateHasChanged();
         }

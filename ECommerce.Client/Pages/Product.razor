@@ -55,6 +55,7 @@
                 class="entity-form-input"
                 placeholder="Category"
                 @bind="ProductModel.CategoryName">
+                <option value=""></option>
                 @foreach (var category in Categories)
                 {
                     <option value="@category.CategoryName">@category.CategoryName</option>

@@ -73,13 +73,14 @@
                 LastName = LastName,
                 Address = Address,
                 PhoneNumber = PhoneNumber,
-                PaymentMethod = PaymentMethod,
+                Payment = PaymentMethod,
                 OrderItems = cartItems.Select(item => new OrderItemViewModel
                 {
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     Price = item.Price,
-                }).ToList()
+                }).ToList(),
+                TotalPrice = cartItems.Sum(item => item.Price * item.Quantity)
             };
 
         // Send the POST request to the server

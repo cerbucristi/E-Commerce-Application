@@ -18,7 +18,7 @@ namespace E_Commerce_Application.API.Controllers
     [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
 
-    public class OrderController : ApiControllerBase
+    public class OrdersController : ApiControllerBase
     {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
