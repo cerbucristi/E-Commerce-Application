@@ -9,9 +9,10 @@ namespace ECommerce.Client.Contracts
     public interface IOrderService
     {
         Task<ApiResponse<OrderDto>> PlaceOrder(OrderViewModel order);
-        Task<IEnumerable<OrderViewModel>> GetOrders();
+        Task<List<OrderViewModel>> GetOrders();
         Task<OrderViewModel> GetOrderById(Guid orderId);
-        Task<bool> DeleteOrder(Guid orderId);
-        // Add other methods as needed
+        Task<ApiResponse<OrderDto>> UpdateOrderAsync(OrderViewModel order, string status);
+
+
     }
 }
