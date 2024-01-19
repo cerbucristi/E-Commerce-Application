@@ -1,4 +1,64 @@
-﻿.products-container {
+﻿.banner-container {
+    align-items: center;
+    background-image: url(https://websitedemos.net/plant-shop-02/wp-content/uploads/sites/931/2021/09/hero-section-bg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    margin-bottom: 32px;
+    max-height: 920px;
+    width: 100vw;
+}
+
+.banner-container:before {
+    background: rgba(20, 26, 15, 0.38);
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+.banner-welcome {
+    color: #fafafa;
+    font-family: 'Unna',serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+.banner-slogan {
+    color: #fafafa;
+    display: flex;
+    font-family: 'Unna',serif;
+    font-size: 72px;
+    justify-content: center;
+    margin: 32px;
+    text-align: center;
+    z-index: 2;
+}
+
+.products-section {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.products-section-title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.52);
+    font-family: 'Unna',serif;
+    font-size: 40px;
+    margin: 32px 32px;
+    text-align: center;
+}
+
+.products-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

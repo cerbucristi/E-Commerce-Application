@@ -13,7 +13,7 @@
                 <div class="entity-add-container">
                     <InputText class="entity-add"
                                placeholder="✍️ Add Category"
-                               @bind-Value="@NewCategory.CategoryName" />
+                               @bind-Value="@NewCategory.CategoryName"/>
 
                     <button class="entity-add-button" @onclick="HandleAddNewCategory">+</button>
                 </div>
@@ -21,33 +21,33 @@
                     @foreach (var category in Categories)
                     {
                         <li class="entity-list-item">
-                            <div class="category-container">
-                                <p class="entity-list-item-name">@category.CategoryName</p>
-                                <div class="button-container ms-auto">
-                                    @if (!category.IsEditing)
-                                    {
-                                        <button class="btn btn-danger btn-sm" @onclick="() => HandleDeleteCategory(category)">Delete</button>
-                                        <button class="btn btn-primary btn-sm ms-1" @onclick="() => StartEditingCategory(category)">Update</button>
-                                    }
-                                </div>
-                            </div>
-                            @if (category.IsEditing)
+                            @if (!category.IsEditing)
                             {
-                                <div class="edit-category-dialog">
-                                    <InputText @bind-Value="@category.EditedCategoryName" />
-                                    <div class="button-container text-end">
-                                        <button class="btn btn-success btn-sm" @onclick="() => HandleUpdateCategoryAsync(category)">Save</button>
-                                        <button class="btn btn-secondary btn-sm ms-1" @onclick="() => CancelEditingCategory(category)">Cancel</button>
-                                    </div>
-                                </div>
+                                <p class="entity-list-item-name">@category.CategoryName</p>
                             }
+                            else
+                            {
+                                <InputText class="entity-list-item-name input" @bind-Value="@category.EditedCategoryName"/>
+                            }
+                            <div class="">
+                                @if (!category.IsEditing)
+                                {
+                                    <span class="" @onclick="() => StartEditingCategory(category)">✏️</span>
+                                    <span class="" @onclick="() => HandleDeleteCategory(category)">❌</span>
+                                }
+                                else
+                                {
+                                    <span class="" @onclick="() => HandleUpdateCategoryAsync(category)">✅</span>
+                                    <span class="" @onclick="() => StopEditingCategory(category)"></span>
+                                }
+                            </div>
                         </li>
                     }
                 </ul>
             </div>
         </Authorized>
         <NotAuthorized>
-            <Login />
+            <Login/>
         </NotAuthorized>
     </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
 </CascadingAuthenticationState>
@@ -58,11 +58,9 @@
 
     private List<CategoryViewModel> Categories = [];
 
-    [SupplyParameterFromForm]
-    private CategoryViewModel NewCategory { get; set; }
+    [SupplyParameterFromForm] private CategoryViewModel NewCategory { get; set; }
 
-    [Inject]
-    public ICategoryDataService CategoryDataService { get; set; }
+    [Inject] public ICategoryDataService CategoryDataService { get; set; }
 
 
     protected override void OnInitialized() => NewCategory = new();
@@ -85,7 +83,7 @@
         {
             var result = await CategoryDataService.CreateCategoryAsync(NewCategory);
             NewCategory.CategoryId = result.Data.CategoryId;
-            Categories.Add(NewCategory);            
+            Categories.Add(NewCategory);
             NewCategory = new();
             StateHasChanged();
         }
@@ -100,7 +98,13 @@
         category.IsEditing = true;
         category.EditedCategoryName = category.CategoryName;
     }
-
+    
+    private void StopEditingCategory(CategoryViewModel category)
+    {
+        category.IsEditing = false;
+        category.EditedCategoryName = "";
+    }
+    
     private void CancelEditingCategory(CategoryViewModel category)
     {
         category.IsEditing = false;
@@ -115,6 +119,7 @@
             category.IsEditing = false;
 
             Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
+            StateHasChanged();
         }
         catch (Exception e)
         {
@@ -132,7 +137,6 @@
             {
                 Categories.Remove(category);
                 StateHasChanged();
-
             }
         }
         catch (Exception e)

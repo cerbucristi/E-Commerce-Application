@@ -22,7 +22,6 @@
                 <Authorized>
                     <div class="navbar-admin-panel">
                         <button class="navbar-admin-panel-button">Admin Panel</button>
-                        <NavLink class="navbar-option" href="/wishlist">Wishlist (@wishlistItemsCount)</NavLink>
                         <div class="navbar-admin-panel-content">
                             <NavLink href="/category">Categories</NavLink>
                             <NavLink href="/manufacturer">Manufacturers</NavLink>
@@ -30,6 +29,7 @@
                             <NavLink href="/adminorders">Orders</NavLink>
                         </div>
                     </div>
+                    <NavLink class="navbar-option" href="/wishlist">Wishlist (@wishlistItemsCount)</NavLink>
                     <NavLink class="navbar-option shopping-cart" href="/cart">
                         @if (globalStateService.CartCountProperty > 0)
                         {
@@ -37,16 +37,16 @@
                         }
                     </NavLink>
                     <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
-                    </Authorized>
-                    <NotAuthorized>
-                        <NavLink class="navbar-option" href="/login">Login</NavLink>
-                    </NotAuthorized>
-                </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-            </CascadingAuthenticationState>
-        </ul>
-    </nav>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="navbar-option" href="/login">Login</NavLink>
+                </NotAuthorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        </CascadingAuthenticationState>
+    </ul>
+</nav>
 
-    @code {
+@code {
     private int cartItemsCount = 0;
     private int wishlistItemsCount = 0;
 
@@ -67,7 +67,7 @@
 
         wishlistItemsCount = allProducts.Count(product => product.Wishlist);
 
-        StateHasChanged(); 
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -82,9 +82,9 @@
     {
         var cartItems = await ShoppingCartService.GetCartItems();
         cartItemsCount = cartItems.Sum(item => item.Quantity);
-        StateHasChanged(); 
+        StateHasChanged();
     }
-    
+
     private void NavigateToWishlist()
     {
         navigationManager.NavigateTo("/wishlist");
@@ -101,4 +101,5 @@
         {
         }
     }
+
 }

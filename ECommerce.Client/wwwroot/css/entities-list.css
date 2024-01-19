@@ -1,4 +1,5 @@
 .entity-list-container {
+    margin-top: 120px;
     text-align: center;
     width: 320px;
 }
@@ -14,7 +15,7 @@
 .entity-add {
     border: 1px solid #501168;
     border-radius: 4px;
-    color: #501168;
+    color: rgb(77, 79, 72);
     padding: 8px 16px;
     width: 100%;
 }
@@ -22,7 +23,7 @@
 .entity-add-button {
     background: none;
     border: none;
-    color: #7579ff;
+    color: rgb(92, 151, 53);
     font-size: 24px;
     position: absolute;
     right: 0;
@@ -39,7 +40,7 @@
 
 .entity-list-item {
     align-items: center;
-    background: linear-gradient(90deg, #191c83, #7579ff);
+    background: linear-gradient(90deg, rgb(92, 151, 53), rgb(77, 79, 72));
     border-radius: 4px;
     color: #fafafa;
     cursor: pointer;
@@ -53,6 +54,11 @@
 .entity-list-item-name {
     margin: 0;
     text-align: center;
+}
+
+.entity-list-item-name.input {
+    background-color: transparent;
+    color: #fafafa;
 }
 
 .entity-list-item-delete-button {

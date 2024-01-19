@@ -7,35 +7,43 @@
 @using ECommerce.Client.Contracts
 @using Microsoft.AspNetCore.Components.Authorization
 
-<div class="products-container">
-    @foreach (var product in Products)
-    {
-        <div class="product-container">
-            @* <div class="wishlist-container" @onclick="() => ToggleWishlist(product.ProductId)"> *@
-            @*     <span class="wishlist-tooltip"> Add to wishlist </span> *@
-            @*     <span class="wishlist-icon">@GetHeartIcon(product.ProductId)</span> *@
-            @* </div> *@
-            <div class="product-image-container">
-                <div class="product-image-actions">
-                    <a class="add-to-cart-container">
-                        <span class="add-to-cart-tooltip"> Add to cart </span>
-                        <span @onclick="() => AddToCart(product)" class="add-to-cart icon"></span>
-                    </a>
-                    <a class="add-to-cart-container">
-                        <span class="add-to-cart-tooltip"> Add to wishlist </span>
-                        <span @onclick="() => ToggleWishlist(product.ProductId)" class="icon">@GetHeartIcon(product.ProductId)</span>
-                    </a>
-                </div>
-                <img class="product-image" src=@product.ImageURL alt="">
-            </div>
+<div class="banner-container">
+    <h2 class="banner-welcome">Welcome to the greenstore</h2>
+    <h1 class="banner-slogan">Let’s Bring the Spring to <br> Your Home</h1>
+</div>
 
-            <div class="product-description-container">
-                <h3 class="product-name">@product.ProductName</h3>
-                <p class="product-category">@product.CategoryName</p>
-                <h4 class="product-price">$@product.Price</h4>
+<div class="products-section">
+    <h1 class="products-section-title">Our Products</h1>
+    <div class="products-container">
+        @foreach (var product in Products)
+        {
+            <div class="product-container">
+                @* <div class="wishlist-container" @onclick="() => ToggleWishlist(product.ProductId)"> *@
+                @*     <span class="wishlist-tooltip"> Add to wishlist </span> *@
+                @*     <span class="wishlist-icon">@GetHeartIcon(product.ProductId)</span> *@
+                @* </div> *@
+                <div class="product-image-container">
+                    <div class="product-image-actions">
+                        <a class="add-to-cart-container">
+                            <span class="add-to-cart-tooltip"> Add to cart </span>
+                            <span @onclick="() => AddToCart(product)" class="add-to-cart icon"></span>
+                        </a>
+                        <a class="add-to-cart-container">
+                            <span class="add-to-cart-tooltip"> Add to wishlist </span>
+                            <span @onclick="() => ToggleWishlist(product.ProductId)" class="icon">@GetHeartIcon(product.ProductId)</span>
+                        </a>
+                    </div>
+                    <img class="product-image" src=@product.ImageURL alt="">
+                </div>
+
+                <div class="product-description-container">
+                    <h3 class="product-name">@product.ProductName</h3>
+                    <p class="product-category">@product.CategoryName</p>
+                    <h4 class="product-price">$@product.Price</h4>
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 @code {
