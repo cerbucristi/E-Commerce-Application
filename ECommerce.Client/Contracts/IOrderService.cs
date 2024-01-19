@@ -12,6 +12,7 @@ namespace ECommerce.Client.Contracts
         Task<List<OrderViewModel>> GetOrders();
         Task<OrderViewModel> GetOrderById(Guid orderId);
         Task<ApiResponse<OrderDto>> UpdateOrderAsync(OrderViewModel order, string status);
+        Task<List<OrderViewModel>> GetOrdersByCustomerId();
 
 
     }

@@ -38,11 +38,11 @@ namespace E_Commerce_Application.API.Controllers
             var result = await Mediator.Send(new GetAllOrdersQuery());
             return Ok(result.Orders);
         }
-        [HttpGet("{orderId}")]
+        [HttpGet("{customerId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(Guid orderId)
+        public async Task<IActionResult> Get(Guid customerId)
         {
-            var result = await Mediator.Send(new GetByIdOrderQuery(orderId));
+            var result = await Mediator.Send(new GetByIdOrderQuery(customerId));
             return Ok(result);
         }
         [HttpDelete("{id}")]

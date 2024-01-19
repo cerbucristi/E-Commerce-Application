@@ -1,0 +1,93 @@
+﻿@page "/clientorders"
+@inject IWishlistDataService WishlistDataService
+@using ECommerce.Client.ViewModels
+@using ECommerce.Client.Contracts
+@using ECommerce.Client.Services
+
+<div class="entity-table-container">
+    <h1>My Orders</h1>
+    <table class="entity-table">
+        <thead class="entity-table-head">
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Adress</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Payment</th>
+                <th scope="col">Price</th>
+                <th scope="col">OrderStatus</th>                
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var order in Orders)
+            {
+                <tr>
+                    <td data-label="First Name">@order.FirstName</td>
+                    <td data-label="LastName">@order.LastName</td>
+                    <td data-label="Address">@order.Address</td>
+                    <td data-label="PhoneNumber">@order.PhoneNumber</td>
+                    <td data-label="Payment">@order.Payment</td>
+                    <td data-label="Total Price">$@String.Format("{0:0.00}", order.TotalPrice)</td>
+                    <td data-label="OrderStatus">@order.OrderStatus</td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    private string status;
+    string error { get; set; }
+
+    [SupplyParameterFromForm] public OrderViewModel OrderModel { get; set; }
+
+    private List<OrderViewModel> Orders = [];
+
+    [Inject] public IOrderService OrderService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        OrderModel = new();
+        try
+        {
+            Orders = (await OrderService.GetOrdersByCustomerId()).ToList();
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+    private async Task UpdateOrderStatus(OrderViewModel order)
+    {
+        try
+        {
+            order.OrderStatus = order.Status;
+            order.Status = string.Empty;
+
+            if (!string.IsNullOrEmpty(order.OrderStatus))
+            {
+
+                var response = await OrderService.UpdateOrderAsync(order, order.OrderStatus);
+
+
+                if (response.IsSuccess)
+                {
+
+                    order.OrderStatus = string.Empty;
+                }
+            }
+            else
+            {
+
+            }
+            status = "";
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+}

@@ -61,6 +61,25 @@ namespace ECommerce.Client.Services
                 throw; 
             }
         }
+        public async Task<List<OrderViewModel>> GetOrdersByCustomerId()
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetTokenAsync());
+
+                var response = await _httpClient.GetAsync($"/api/v1/orders/{new Guid()}");
+                response.EnsureSuccessStatusCode();
+
+                var responseData = await response.Content.ReadFromJsonAsync<List<OrderViewModel>>();
+
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public async Task<ApiResponse<OrderDto>> UpdateOrderAsync(OrderViewModel order,string status)
         {
