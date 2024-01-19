@@ -17,6 +17,7 @@ namespace ECommerce.Client.Services
 
         public async Task Login(LoginViewModel loginRequest)
         {
+
             var response = await httpClient.PostAsJsonAsync("api/v1/authentication/login", loginRequest);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {

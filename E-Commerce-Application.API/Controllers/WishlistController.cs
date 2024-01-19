@@ -7,7 +7,6 @@ using ECommerce.Application.Features.Events.Commands.DeleteWishlist;
 
 namespace ECommerce.API.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
     public class WishlistController : ApiControllerBase
     {

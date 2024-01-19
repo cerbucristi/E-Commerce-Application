@@ -1,5 +1,6 @@
 ﻿@inject IShoppingCartService ShoppingCartService
 @inject IProductDataService ProductDataService
+@inject ITokenService TokenService
 @using ECommerce.Client.Auth
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Auth
@@ -20,22 +21,30 @@
         <CascadingAuthenticationState>
             <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
                 <Authorized>
-                    <div class="navbar-admin-panel">
-                        <button class="navbar-admin-panel-button">Admin Panel</button>
-                        <div class="navbar-admin-panel-content">
-                            <NavLink href="/category">Categories</NavLink>
-                            <NavLink href="/manufacturer">Manufacturers</NavLink>
-                            <NavLink href="/product">Products</NavLink>
-                            <NavLink href="/adminorders">Orders</NavLink>
+                    @if (UserRole == "User")
+                    {
+                        <NavLink class="navbar-option" href="/wishlist">Wishlist (@globalStateService.WishlistCountProperty)</NavLink>
+                        <NavLink class="navbar-option shopping-cart" href="/cart">
+                            @if (globalStateService.CartCountProperty > 0)
+                            {
+                                <span class="quantity">@globalStateService.CartCountProperty</span>
+                            }
+                        </NavLink>
+                    }
+
+                    @if (UserRole == "Admin")
+                    {
+                        <div class="navbar-admin-panel">
+                            <button class="navbar-admin-panel-button">Admin Panel</button>
+                            <div class="navbar-admin-panel-content">
+                                <NavLink href="/category">Categories</NavLink>
+                                <NavLink href="/manufacturer">Manufacturers</NavLink>
+                                <NavLink href="/product">Products</NavLink>
+                                <NavLink href="/adminorders">Orders</NavLink>
+                            </div>
                         </div>
-                    </div>
-                    <NavLink class="navbar-option" href="/wishlist">Wishlist (@globalStateService.WishlistCountProperty)</NavLink>
-                    <NavLink class="navbar-option shopping-cart" href="/cart">
-                        @if (globalStateService.CartCountProperty > 0)
-                        {
-                            <span class="quantity">@globalStateService.CartCountProperty</span>
-                        }
-                    </NavLink>
+                    }
+
                     <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
                 </Authorized>
                 <NotAuthorized>
@@ -46,12 +55,15 @@
     </ul>
 </nav>
 
+
 @code {
+
     private int cartItemsCount = 0;
     private int wishlistItemsCount = 0;
-
+    private string UserRole;
     protected override async Task OnInitializedAsync()
     {
+        UserRole = await TokenService.GetRoleFromJwtAsync();
         await LoadWishlistItemsCount();
         await LoadCartItemsCount();
 
@@ -99,6 +111,7 @@
         {
             await authStateProvider.Logout();
             navigationManager.NavigateTo("/");
+            StateHasChanged();
         }
         catch (Exception e)
         {

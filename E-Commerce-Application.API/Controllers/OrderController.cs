@@ -15,7 +15,6 @@ namespace E_Commerce_Application.API.Controllers
 {
 
 
-    [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
 
     public class OrdersController : ApiControllerBase

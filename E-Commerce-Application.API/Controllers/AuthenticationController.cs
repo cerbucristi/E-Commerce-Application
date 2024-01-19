@@ -58,7 +58,7 @@ namespace ECommerce.API.Controllers
                     return BadRequest("Invalid payload");
                 }
                     
-                var (status, message) = await _authService.Registeration(model, UserRoles.Admin);
+                var (status, message) = await _authService.Registeration(model, UserRoles.User);
 
                 if (status == 0)
                 {

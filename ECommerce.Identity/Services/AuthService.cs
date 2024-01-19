@@ -69,7 +69,7 @@ namespace ECommerce.Identity.Services
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
 
-            string token = GenerateToken(authClaims, user);
+            string token = await GenerateTokenAsync(authClaims, user);
             return (1, token);
         }
 
@@ -79,7 +79,7 @@ namespace ECommerce.Identity.Services
             return (1, "User logged out successfully!");
         }
 
-        private string GenerateToken(IEnumerable<Claim> claims, ApplicationUser user)
+        private async Task<string> GenerateTokenAsync(IEnumerable<Claim> claims, ApplicationUser user)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
 
@@ -93,14 +93,20 @@ namespace ECommerce.Identity.Services
             };
 
             tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+            tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
-            var userIdClaim = new Claim(ClaimTypes.NameIdentifier, user.Id);
-            tokenDescriptor.Subject.AddClaim(userIdClaim);
+
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
 
     }
 }

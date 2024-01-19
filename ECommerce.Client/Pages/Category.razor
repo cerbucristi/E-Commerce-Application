@@ -1,4 +1,5 @@
 @page "/category"
+@inject ITokenService TokenService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
@@ -55,6 +56,7 @@
 @code {
 
     string error { get; set; }
+    private string UserRole;
 
     private List<CategoryViewModel> Categories = [];
 
@@ -67,6 +69,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        UserRole = await TokenService.GetRoleFromJwtAsync();
+        Console.WriteLine(UserRole);
         try
         {
             Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
