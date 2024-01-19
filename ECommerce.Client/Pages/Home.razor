@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IWishlistDataService WishlistDataService
 @inject IShoppingCartService ShoppingCartService
+@inject GlobalStateService globalStateService
 
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
@@ -65,6 +66,7 @@
         }
     }
 
+
     private async void ToggleWishlist(Guid productId)
     {
         try
@@ -73,27 +75,28 @@
 
             if (product != null)
             {
-                var isProductInWishlist = product.Wishlist;
 
-                if (isProductInWishlist)
+                product.Wishlist = !product.Wishlist;
+
+                if (product.Wishlist)
                 {
-                    await WishlistDataService.RemoveFromWishlistAsync(productId);
+                    await WishlistDataService.AddToWishlistAsync(productId);
                 }
                 else
                 {
-                    await WishlistDataService.AddToWishlistAsync(productId);
+                    await WishlistDataService.RemoveFromWishlistAsync(productId);
                 }
 
                 await RefreshProducts();
 
-                StateHasChanged();
+                globalStateService.WishlistCountProperty = Products.Count(p => p.Wishlist);
             }
         }
         catch (Exception)
         {
+
         }
     }
-
     private async Task RefreshProducts()
     {
         try

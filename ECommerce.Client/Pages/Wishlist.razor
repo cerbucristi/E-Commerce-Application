@@ -1,7 +1,7 @@
 ﻿@page "/wishlist"
 @inject IWishlistDataService WishlistDataService
 @inject IShoppingCartService ShoppingCartService
-
+@inject GlobalStateService globalStateService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
 @using ECommerce.Client.Contracts
@@ -35,13 +35,25 @@
 
 @code {
     string error { get; set; }
-
     private List<ProductViewModel> Products = new List<ProductViewModel>();
+    private int wishlistItemsCount = 0;
 
     [Inject]
     public IProductDataService ProductDataService { get; set; }
 
     protected override async Task OnInitializedAsync()
+    {
+        await LoadWishlistItemsCount();
+        await LoadProducts();
+    }
+
+    private async Task LoadWishlistItemsCount()
+    {
+        var allProducts = await ProductDataService.GetProductsAsync();
+        wishlistItemsCount = allProducts.Count(product => product.Wishlist);
+    }
+
+    private async Task LoadProducts()
     {
         try
         {
@@ -54,6 +66,7 @@
         }
     }
 
+
     private async void ToggleWishlist(Guid productId)
     {
         try
@@ -62,11 +75,20 @@
 
             if (product != null)
             {
-                await WishlistDataService.RemoveFromWishlistAsync(productId);
+                var isProductInWishlist = product.Wishlist;
+
+                if (isProductInWishlist)
+                {
+                    await WishlistDataService.RemoveFromWishlistAsync(productId);
+                }
+                else
+                {
+                    await WishlistDataService.AddToWishlistAsync(productId);
+                }
 
                 await RefreshProducts();
 
-                StateHasChanged();
+                globalStateService.WishlistCountProperty = Products.Count(p => p.Wishlist);
             }
         }
         catch (Exception)
@@ -79,7 +101,6 @@
         try
         {
             var updatedProducts = await ProductDataService.GetProductsAsync();
-
             Products.Clear();
             Products.AddRange(updatedProducts.Where(p => p.Wishlist));
         }
