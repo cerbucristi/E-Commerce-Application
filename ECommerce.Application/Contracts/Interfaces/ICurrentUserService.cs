@@ -9,5 +9,7 @@ namespace ECommerce.Application.Contracts.Interfaces
         string GetCurrentUserId();
 
         string GetCurrentUserEmail();
+
+        bool IsUserAuthorized();
     }
 }
