@@ -22,6 +22,7 @@ namespace ECommerce.Application.Features.Orders.Queries.GetAll
             var ordersResult = await _orderRepository.GetAllAsync();
             var orderItemsResult = await _orderItemRepository.GetAllAsync();
             var userIdString = _currentUserService.GetCurrentUserId();
+
             Guid userId = Guid.Parse(userIdString);
             if(ordersResult.IsSuccess && orderItemsResult.IsSuccess)
             {            

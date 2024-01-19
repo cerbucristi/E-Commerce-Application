@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Application.Features.Orders.Queries.GetById
 {
-    public record GetByIdOrderQuery(Guid orderId) : IRequest<OrderDto>;
+    public record GetByIdOrderQuery(Guid orderId) : IRequest<List<OrderDto>>;
     
 }

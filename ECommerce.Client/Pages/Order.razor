@@ -73,6 +73,13 @@
     public async Task SubmitForm()
     {
         // Create an order object with the form data
+        cartItems = await ShoppingCartService.GetCartItems();
+        
+        decimal totalPrice = 0;
+        foreach (var item in cartItems)
+        {
+            totalPrice += item.Price * item.Quantity;
+        }
         var order = new OrderViewModel
             {
                 FirstName = FirstName,
@@ -86,7 +93,7 @@
                     Quantity = item.Quantity,
                     Price = item.Price,
                 }).ToList(),
-                TotalPrice = cartItems.Sum(item => item.Price * item.Quantity)
+                TotalPrice = totalPrice
             };
 
         // Send the POST request to the server

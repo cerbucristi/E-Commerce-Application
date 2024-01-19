@@ -1,11 +1,11 @@
-﻿@page "/adminOrders"
+﻿@page "/clientorders"
 @inject IWishlistDataService WishlistDataService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Services
 
 <div class="entity-table-container">
-    <h1>Orders</h1>
+    <h1>My Orders</h1>
     <table class="entity-table">
         <thead class="entity-table-head">
             <tr>
@@ -15,12 +15,11 @@
                 <th scope="col">Phone Number</th>
                 <th scope="col">Payment</th>
                 <th scope="col">Price</th>
-                <th scope="col">OrderStatus</th>
-                <th scope="col">Actions</th>
+                <th scope="col">OrderStatus</th>                
             </tr>
         </thead>
         <tbody>
-        
+
             @foreach (var order in Orders)
             {
                 <tr>
@@ -30,15 +29,7 @@
                     <td data-label="PhoneNumber">@order.PhoneNumber</td>
                     <td data-label="Payment">@order.Payment</td>
                     <td data-label="Total Price">$@String.Format("{0:0.00}", order.TotalPrice)</td>
-                    <td data-label="OrderStatus">@order.OrderStatus</td>
-                    <td>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Order's Status" @bind="order.Status">
-                            <div class="input-group-append">
-                                <button @onclick="() => UpdateOrderStatus(order)" class="btn btn-outline-secondary" type="button">☑️</button>
-                            </div>
-                        </div>
-                    </td>                                       
+                    <td data-label="OrderStatus">@order.OrderStatus</td>                    
                 </tr>
             }
         </tbody>
@@ -52,16 +43,16 @@
 
     [SupplyParameterFromForm] public OrderViewModel OrderModel { get; set; }
 
-    private List<OrderViewModel> Orders = [];    
+    private List<OrderViewModel> Orders = [];
 
-    [Inject] public IOrderService OrderService{ get; set; }    
+    [Inject] public IOrderService OrderService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        OrderModel = new();       
+        OrderModel = new();
         try
-        {            
-            Orders = (await OrderService.GetOrders()).ToList();
+        {
+            Orders = (await OrderService.GetOrdersByCustomerId()).ToList();
         }
         catch (Exception e)
         {
@@ -74,22 +65,22 @@
         {
             order.OrderStatus = order.Status;
             order.Status = string.Empty;
-                       
+
             if (!string.IsNullOrEmpty(order.OrderStatus))
             {
-                
+
                 var response = await OrderService.UpdateOrderAsync(order, order.OrderStatus);
 
-                
+
                 if (response.IsSuccess)
                 {
-                    
+
                     order.OrderStatus = string.Empty;
-                }                               
+                }
             }
             else
             {
-                
+
             }
             status = "";
         }
