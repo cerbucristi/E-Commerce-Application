@@ -2,6 +2,10 @@
 @inject IShoppingCartService ShoppingCartService
 @inject IOrderService OrderService
 @inject IToastService ToastService
+@inject NavigationManager NavigationManager
+@using Blazored
+@using Blazored.Modal
+@using Blazored.Modal.Services
 @using Blazored.Toast.Services
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Services
@@ -51,6 +55,9 @@
     <button type="button" class="btn btn-primary" @onclick="SubmitForm">Submit</button>
 </div>
 
+
+
+
 @code {
     private string FirstName { get; set; }
     private string LastName { get; set; }
@@ -58,13 +65,12 @@
     private string PhoneNumber { get; set; }
     private string PaymentMethod { get; set; }
     private List<CartItemViewModel> cartItems = new List<CartItemViewModel>();
-
+    
     protected override async Task OnInitializedAsync()
     {
         cartItems = await ShoppingCartService.GetCartItems();
     }
-
-    private async Task SubmitForm()
+    public async Task SubmitForm()
     {
         // Create an order object with the form data
         var order = new OrderViewModel
@@ -89,12 +95,19 @@
         // Show a toast message based on the result
         if (success.IsSuccess)
         {
-            ToastService.ShowSuccess("Order placed successfully!");
-            // Optionally, you can redirect to a confirmation page
+            await ShoppingCartService.ClearCart();
+
+            // Show the success modal
+            
+
+            // Redirect to the home page after 5 seconds
+            await Task.Delay(5000);
+            NavigationManager.NavigateTo("/", forceLoad: true);
         }
         else
         {
             ToastService.ShowError("Failed to place the order. Please try again.");
         }
+
     }
 }

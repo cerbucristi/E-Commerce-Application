@@ -1,191 +1,105 @@
-﻿@page "/adminorders"
+﻿@page "/adminOrders"
+@inject IWishlistDataService WishlistDataService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Services
 
 <div class="entity-table-container">
-    <h1>Products</h1>
+    <h1>Orders</h1>
     <table class="entity-table">
         <thead class="entity-table-head">
-        <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Price</th>
-            <th scope="col">Actions</th>
-        </tr>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Adress</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Payment</th>
+                <th scope="col">Price</th>
+                <th scope="col">OrderStatus</th>
+                <th scope="col">Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var product in Products)
-        {
-            <tr>
-                <td data-label="Product ProductName">@product.ProductName</td>
-                <td data-label="Category">@product.CategoryName</td>
-                <td data-label="Price">$@String.Format("{0:0.00}", product.Price)</td>
-                <td data-label="Actions">
-                    <span @onclick="() => EnableEditProductForm(product)" class="action edit">✏️</span>
-                    <span @onclick="() => HandleDeleteProduct(product.ProductId)" class="action delete">❌</span>
-                </td>
-            </tr>
-        }
+            @* public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public List<OrderItemViewModel> OrderItems { get; set; }
+        public string Payment { get; set; }
+        public decimal TotalPrice { get; set; } *@
+            @foreach (var order in Orders)
+            {
+                <tr>
+                    <td data-label="First Name">@order.FirstName</td>
+                    <td data-label="LastName">@order.LastName</td>
+                    <td data-label="Address">@order.Address</td>
+                    <td data-label="PhoneNumber">@order.PhoneNumber</td>
+                    <td data-label="Payment">@order.Payment</td>
+                    <td data-label="Total Price">$@String.Format("{0:0.00}", order.TotalPrice)</td>
+                    <td data-label="OrderStatus">@order.OrderStatus</td>
+                    <td data-label="Actions">
+                        <input type="text" @bind="order.OrderStatus" />
+                        <button @onclick="() => UpdateOrderStatus(order) " class="action edit">☑️</button>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-    <button @onclick="EnableCreateProductForm" class="create-new-product-button">Create new</button>
 </div>
 
-@if (isProductFormEnabled)
-{
-    <div class="entity-form-container">
-
-        <span @onclick="CloseProductForm" class="entity-form-close-button">X</span>
-
-        <header class="entity-form-header">
-            <h1 class="entity-form-header-title">@(editingProduct ? "Edit Product" : "New Product")</h1>
-        </header>
-        <form
-            class="entity-form"
-            method="post"
-            @onsubmit="HandleCreateAndEditManufacturer">
-            <InputText
-                class="entity-form-input"
-                placeholder="Product Name"
-                @bind-Value="ProductModel.ProductName"/>
-            <select
-                class="entity-form-input"
-                placeholder="Category"
-                @bind="ProductModel.CategoryName">
-                @foreach (var category in Categories)
-                {
-                    <option value="@category.CategoryName">@category.CategoryName</option>
-                }
-            </select>
-            <InputNumber
-                class="entity-form-input"
-                placeholder="Password"
-                @bind-Value="ProductModel.Price"/>
-            <InputText
-                class="entity-form-input"
-                placeholder="Image URL"
-                @bind-Value="ProductModel.ImageURL"/>
-            <label class="text-danger">@error</label>
-            <button class="entity-form-button">@(editingProduct ? "Edit Product" : "Create Product")</button>
-        </form>
-    </div>
-}
-
 @code {
-    bool isProductFormEnabled = false;
 
-    bool editingProduct = false;
-    bool creatingProduct = false;
-
+    private string status;
     string error { get; set; }
 
-    [SupplyParameterFromForm] public ProductViewModel ProductModel { get; set; }
+    [SupplyParameterFromForm] public OrderViewModel OrderModel { get; set; }
 
-    private List<ProductViewModel> Products = [];
+    private List<OrderViewModel> Orders = [];    
 
-    private List<CategoryViewModel> Categories = [];
+    [Inject] public IOrderService OrderService{ get; set; }    
 
-    [Inject] public IProductDataService ProductDataService { get; set; }
-    [Inject] public ICategoryDataService CategoryDataService { get; set; }
-    
     protected override async Task OnInitializedAsync()
     {
-        ProductModel = new();
-        ProductModel.ProductId = Guid.NewGuid(); // Only for mock purposes, this should be deleted
-        
+        OrderModel = new();       
         try
-        {
-            Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
-            Products = (await ProductDataService.GetProductsAsync()).ToList();
+        {            
+            Orders = (await OrderService.GetOrders()).ToList();
         }
         catch (Exception e)
         {
             error = e.Message;
         }
     }
-
-    private void EnableCreateProductForm()
+    private async Task UpdateOrderStatus(OrderViewModel order)
     {
-        isProductFormEnabled = true;
-        creatingProduct = true;
-    }
-
-    private void EnableEditProductForm(ProductViewModel product)
-    {
-        isProductFormEnabled = true;
-        editingProduct = true;
-        ProductModel = (ProductViewModel)product.Clone();
-    }
-
-    private void CloseProductForm()
-    {
-        isProductFormEnabled = false;
-        editingProduct = false;
-        creatingProduct = false;
-        ProductModel = new();
-        error = "";
-    }
-
-    private async void HandleCreateAndEditManufacturer()
-    {
-        if (!ProductModel.IsCompleted())
-        {
-            error = "No field should be empty";
-            return;
-        }
-
-        if (ProductModel.Price <= 0)
-        {
-            error = "Price can't be lower or equal to 0";
-            return;
-        }
-
-        error = "";
-
         try
         {
-            ProductModel.CategoryId = Categories.First(category => category.CategoryName == ProductModel.CategoryName).CategoryId;
-
-            if (editingProduct)
+            // Call the service to update OrderStatus           
+            if (!string.IsNullOrEmpty(order.OrderStatus))
             {
-                var result = await ProductDataService.UpdateProductAsync(ProductModel);
-                ProductModel.ProductId = result.Data!.ProductId;
+                // Call your service to update OrderStatus using a PATCH request
+                var response = await OrderService.UpdateOrderAsync(order, order.OrderStatus);
 
-                Products = Products.ConvertAll(product =>
+                // Check if the update was successful
+                if (response.IsSuccess)
                 {
-                    if (product.ProductId == ProductModel.ProductId)
-                    {
-                        return ProductModel;
-                    }
-                    
-                    return product;
+                    // Optionally, you can show a success message
+                    // Clear the OrderStatus after updating
+                    order.OrderStatus = string.Empty;
+                }
+                else
+                {
+                    // Handle the case when the update fails
+                    // You can display an error message or take appropriate action
+                }
                 
-                });
             }
-            else if (creatingProduct)
+            else
             {
-                var result = await ProductDataService.CreateProductAsync(ProductModel);
-                ProductModel.ProductId = result.Data!.ProductId;
-                Products.Add(ProductModel);
+                // Handle the case when OrderStatus is empty
+                // You can display a validation message or take appropriate action
             }
-            ProductModel = new();
-            CloseProductForm();
-            StateHasChanged();
-        }
-        catch (Exception e)
-        {
-            error = e.Message;
-        }
-    }
-
-    private async void HandleDeleteProduct(Guid id)
-    {
-        try
-        {
-            await ProductDataService.DeleteProductAsync(id);
-            Products = Products.Where(product => product.ProductId.ToString() != id.ToString()).ToList();
-            StateHasChanged();
+            status = "";
         }
         catch (Exception e)
         {

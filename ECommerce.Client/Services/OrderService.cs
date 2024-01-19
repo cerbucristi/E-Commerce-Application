@@ -36,24 +36,50 @@ namespace ECommerce.Client.Services
             }
             catch (Exception ex)
             {
-                // Handle exception (e.g., log or throw)
+                
                 return new ApiResponse<OrderDto> { IsSuccess = false, Message = ex.Message };
             }
         }
 
 
-        public async Task<IEnumerable<OrderViewModel>> GetOrders()
+        public async Task<List<OrderViewModel>> GetOrders()
         {
             try
             {
-                return await _httpClient.GetFromJsonAsync<IEnumerable<OrderViewModel>>(RequestUri);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetTokenAsync());
+
+                var response = await _httpClient.GetAsync(RequestUri);
+                response.EnsureSuccessStatusCode();
+
+                var responseData = await response.Content.ReadFromJsonAsync<List<OrderViewModel>>();
+
+                return responseData;
             }
             catch (Exception ex)
             {
-                // Handle exception (e.g., log or throw)
-                return null;
+                
+                throw; 
             }
         }
+
+        public async Task<ApiResponse<OrderDto>> UpdateOrderAsync(OrderViewModel order,string status)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await _tokenService.GetTokenAsync());
+
+            var orderUpdate = new OrderUpdateDto
+            {
+                OrderId = order.OrderId,
+                OrderStatus = status
+            };
+
+            var result = await _httpClient.PatchAsJsonAsync($"{RequestUri}/{order.OrderId}", orderUpdate);
+            result.EnsureSuccessStatusCode();
+
+            var response = await result.Content.ReadFromJsonAsync<OrderDto>();
+            return new ApiResponse<OrderDto>() { Data = response, IsSuccess = result.IsSuccessStatusCode };
+        }
+
 
         public async Task<OrderViewModel> GetOrderById(Guid orderId)
         {
@@ -63,27 +89,11 @@ namespace ECommerce.Client.Services
             }
             catch (Exception ex)
             {
-                // Handle exception (e.g., log or throw)
+                
                 return null;
             }
-        }
+        }   
 
-        public async Task<bool> DeleteOrder(Guid orderId)
-        {
-            try
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", await _tokenService.GetTokenAsync());
-
-                var response = await _httpClient.DeleteAsync($"{RequestUri}/{orderId}");
-                return response.IsSuccessStatusCode;
-            }
-            catch (Exception ex)
-            {
-                // Handle exception (e.g., log or throw)
-                return false;
-            }
-        }
-
-        // Add other methods as needed
+        
     }
 }

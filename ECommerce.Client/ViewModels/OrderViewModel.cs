@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace ECommerce.Client.ViewModels
 {
     public class OrderViewModel
-    {        
+    {
+        public Guid OrderId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -12,5 +13,6 @@ namespace ECommerce.Client.ViewModels
         public List<OrderItemViewModel> OrderItems { get; set; }
         public string Payment { get; set; }
         public decimal TotalPrice { get; set; }
+        public string OrderStatus { get; set; }
     }
 }
