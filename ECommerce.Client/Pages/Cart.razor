@@ -27,8 +27,8 @@
                     <td data-label="Price">$@String.Format("{0:0.00}", item.Price * item.Quantity)</td>
                     <td data-label="Quantity">@item.Quantity</td>
                     <td data-label="Actions">
-                        <button @onclick="()=>IncreaseQuantity(item)" class="action">+</button>
-                        <button @onclick="()=>DecreaseQuantity(item)" class="action">-</button>
+                        <span @onclick="()=>IncreaseQuantity(item)" class="action">➕</span>
+                        <span @onclick="()=>DecreaseQuantity(item)" class="action">➖</span>
                         <span @onclick="()=>RemoveCartItem(item)" class="action delete">❌</span>
                     </td>
                 </tr>
@@ -42,8 +42,8 @@
                 </td>
                 <td></td>
                 <td data-label="Actions">
-                    <button @onclick="GoToOrder" class="action goto-order">Order</button>
-                    <button @onclick="ClearShoppingCart" class="action clear-cart">Clear Cart</button>
+                    <button @onclick="GoToOrder" class="btn btn-outline-success">Order</button>
+                    <button @onclick="ClearShoppingCart" class="btn btn-outline-success">Clear Cart</button>
                 </td>
             </tr>
         </tfoot>

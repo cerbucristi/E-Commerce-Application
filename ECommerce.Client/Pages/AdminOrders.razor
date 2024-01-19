@@ -20,13 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @* public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
-        public List<OrderItemViewModel> OrderItems { get; set; }
-        public string Payment { get; set; }
-        public decimal TotalPrice { get; set; } *@
+        
             @foreach (var order in Orders)
             {
                 <tr>
@@ -37,10 +31,14 @@
                     <td data-label="Payment">@order.Payment</td>
                     <td data-label="Total Price">$@String.Format("{0:0.00}", order.TotalPrice)</td>
                     <td data-label="OrderStatus">@order.OrderStatus</td>
-                    <td data-label="Actions">
-                        <input type="text" @bind="order.OrderStatus" />
-                        <button @onclick="() => UpdateOrderStatus(order) " class="action edit">☑️</button>
-                    </td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Order's Status" @bind="order.Status">
+                            <div class="input-group-append">
+                                <button @onclick="() => UpdateOrderStatus(order)" class="btn btn-outline-secondary" type="button">☑️</button>
+                            </div>
+                        </div>
+                    </td>                                       
                 </tr>
             }
         </tbody>
@@ -74,30 +72,24 @@
     {
         try
         {
-            // Call the service to update OrderStatus           
+            order.OrderStatus = order.Status;
+            order.Status = string.Empty;
+                       
             if (!string.IsNullOrEmpty(order.OrderStatus))
             {
-                // Call your service to update OrderStatus using a PATCH request
+                
                 var response = await OrderService.UpdateOrderAsync(order, order.OrderStatus);
 
-                // Check if the update was successful
+                
                 if (response.IsSuccess)
                 {
-                    // Optionally, you can show a success message
-                    // Clear the OrderStatus after updating
+                    
                     order.OrderStatus = string.Empty;
-                }
-                else
-                {
-                    // Handle the case when the update fails
-                    // You can display an error message or take appropriate action
-                }
-                
+                }                               
             }
             else
             {
-                // Handle the case when OrderStatus is empty
-                // You can display a validation message or take appropriate action
+                
             }
             status = "";
         }

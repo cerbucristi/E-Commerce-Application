@@ -14,5 +14,6 @@ namespace ECommerce.Client.ViewModels
         public string Payment { get; set; }
         public decimal TotalPrice { get; set; }
         public string OrderStatus { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }
