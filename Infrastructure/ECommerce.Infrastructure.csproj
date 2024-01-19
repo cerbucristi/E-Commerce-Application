@@ -30,4 +30,8 @@
     <ProjectReference Include="..\ECommerce.Identity\ECommerce.Identity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\ECommerceContextModelSnapshot.cs" />
+  </ItemGroup>
+
 </Project>

@@ -11,16 +11,21 @@
     @foreach (var product in Products)
     {
         <div class="product-container">
-            <div class="wishlist-container" @onclick="() => ToggleWishlist(product.ProductId)">
-                <span class="wishlist-tooltip"> Add to wishlist </span>
-                <span class="wishlist-icon">@GetHeartIcon(product.ProductId)</span>
-            </div>
-
+            @* <div class="wishlist-container" @onclick="() => ToggleWishlist(product.ProductId)"> *@
+            @*     <span class="wishlist-tooltip"> Add to wishlist </span> *@
+            @*     <span class="wishlist-icon">@GetHeartIcon(product.ProductId)</span> *@
+            @* </div> *@
             <div class="product-image-container">
-                <a class="add-to-cart-container">
-                    <span class="add-to-cart-tooltip"> Add to cart </span>
-                    <span @onclick="()=>AddToCart(product)" class="add-to-cart-icon"></span>
-                </a>
+                <div class="product-image-actions">
+                    <a class="add-to-cart-container">
+                        <span class="add-to-cart-tooltip"> Add to cart </span>
+                        <span @onclick="() => AddToCart(product)" class="add-to-cart icon"></span>
+                    </a>
+                    <a class="add-to-cart-container">
+                        <span class="add-to-cart-tooltip"> Add to wishlist </span>
+                        <span @onclick="() => ToggleWishlist(product.ProductId)" class="icon">@GetHeartIcon(product.ProductId)</span>
+                    </a>
+                </div>
                 <img class="product-image" src=@product.ImageURL alt="">
             </div>
 
@@ -38,8 +43,7 @@
 
     private List<ProductViewModel> Products = new List<ProductViewModel>();
 
-    [Inject]
-    public IProductDataService ProductDataService { get; set; }
+    [Inject] public IProductDataService ProductDataService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,7 +83,6 @@
         }
         catch (Exception)
         {
-
         }
     }
 
@@ -101,19 +104,17 @@
     {
         return Products.FirstOrDefault(p => p.ProductId == productId)?.Wishlist == true ? "❤️" : "🤍";
     }
-      
+
     private async Task AddToCart(ProductViewModel product)
     {
         CartItemViewModel cartItem = new CartItemViewModel
-            {
-                ProductId = product.ProductId,
-                Quantity = 1,
-                Price = product.Price,
-                ProductName = product.ProductName,  
-                ProductCategory = product.CategoryName,  
-                                                        
-            };
-
+        {
+            ProductId = product.ProductId,
+            Quantity = 1,
+            Price = product.Price,
+            ProductName = product.ProductName,
+            ProductCategory = product.CategoryName,
+        };
         await ShoppingCartService.AddToCart(cartItem);
     }
 

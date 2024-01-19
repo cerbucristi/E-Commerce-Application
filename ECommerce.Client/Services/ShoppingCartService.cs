@@ -11,10 +11,12 @@ namespace ECommerce.Client.Services
     {
         private const string CartKey = "ShoppingCart";
         private readonly ILocalStorageService _localStorageService;
+        private readonly GlobalStateService _globalStateService;
 
-        public ShoppingCartService(ILocalStorageService localStorageService)
+        public ShoppingCartService(ILocalStorageService localStorageService, GlobalStateService globalStateService)
         {
             _localStorageService = localStorageService;
+            _globalStateService = globalStateService;
         }
 
         public async Task<List<CartItemViewModel>> GetCartItems()
@@ -30,6 +32,7 @@ namespace ECommerce.Client.Services
             if (!cartItems.Any(p => p.ProductId == cartItem.ProductId))
             {
                 cartItems.Add(cartItem);
+                _globalStateService.CartCountProperty = cartItems.Count;
                 await SaveCartItems(cartItems);
             }
         }
@@ -42,6 +45,7 @@ namespace ECommerce.Client.Services
             if (existingCartItem != null)
             {
                 cartItems.Remove(existingCartItem);
+                _globalStateService.CartCountProperty = cartItems.Count;
                 await SaveCartItems(cartItems);
             }
         }
@@ -66,6 +70,10 @@ namespace ECommerce.Client.Services
             if (existingCartItem != null && existingCartItem.Quantity > 1)
             {
                 existingCartItem.Quantity--;
+                if (existingCartItem.Quantity == 0)
+                {
+
+                }
                 await SaveCartItems(cartItems);
             }
         }

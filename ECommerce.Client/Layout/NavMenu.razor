@@ -3,10 +3,13 @@
 @using ECommerce.Client.Auth
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Auth
+@using ECommerce.Client.Services
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject NavigationManager navigationManager
 @inject CustomStateProvider authStateProvider
+@inject GlobalStateService globalStateService
+@inject IShoppingCartService shoppingCartService
 
 <nav class="navbar">
     <ul class="navbar-left-container">
@@ -27,8 +30,13 @@
                             <NavLink href="/adminorders">Orders</NavLink>
                         </div>
                     </div>
-                    <NavLink class="navbar-option" href="/cart">ShoppingCart (@cartItemsCount)</NavLink>
-                        <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
+                    <NavLink class="navbar-option shopping-cart" href="/cart">
+                        @if (globalStateService.CartCountProperty > 0)
+                        {
+                            <span class="quantity">@globalStateService.CartCountProperty</span>
+                        }
+                    </NavLink>
+                    <NavLink class="navbar-option" @onclick="OnLogout">Logout</NavLink>
                     </Authorized>
                     <NotAuthorized>
                         <NavLink class="navbar-option" href="/login">Login</NavLink>
@@ -46,6 +54,9 @@
     {
         await LoadWishlistItemsCount();
         await LoadCartItemsCount();
+
+        globalStateService.OnChange += StateHasChanged;
+        globalStateService.CartCountProperty = (await shoppingCartService.GetCartItems()).Count;
 
         StateHasChanged();
     }
@@ -73,6 +84,7 @@
         cartItemsCount = cartItems.Sum(item => item.Quantity);
         StateHasChanged(); 
     }
+    
     private void NavigateToWishlist()
     {
         navigationManager.NavigateTo("/wishlist");

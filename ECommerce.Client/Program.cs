@@ -33,6 +33,7 @@ builder.Services.AddScoped<CustomStateProvider>();
 //builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddSingleton<GlobalStateService>();
 
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 {
