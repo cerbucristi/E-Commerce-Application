@@ -1,5 +1,6 @@
 @page "/product"
 @inject IWishlistDataService WishlistDataService
+@inject GlobalStateService globalStateService
 @using ECommerce.Client.ViewModels
 @using ECommerce.Client.Contracts
 @using ECommerce.Client.Services
@@ -195,6 +196,7 @@
             error = e.Message;
         }
     }
+
     private async void ToggleWishlist(Guid productId)
     {
         try
@@ -203,26 +205,32 @@
 
             if (product != null)
             {
-                var isProductInWishlist = product.Wishlist;
+             
+                product.Wishlist = !product.Wishlist;
 
-                if (isProductInWishlist)
+                if (product.Wishlist)
                 {
-                    await WishlistDataService.RemoveFromWishlistAsync(productId);
+                    await WishlistDataService.AddToWishlistAsync(productId);
                 }
                 else
                 {
-                    await WishlistDataService.AddToWishlistAsync(productId);
+                    await WishlistDataService.RemoveFromWishlistAsync(productId);
                 }
 
                 await RefreshProducts();
 
-                StateHasChanged();
+                globalStateService.WishlistCountProperty = Products.Count(p => p.Wishlist);
             }
         }
         catch (Exception)
         {
-
+           
         }
+    }
+
+    private string GetHeartIcon(Guid productId)
+    {
+        return Products.FirstOrDefault(p => p.ProductId == productId)?.Wishlist == true ? "❤️" : "🤍";
     }
     private async Task RefreshProducts()
     {
@@ -236,11 +244,6 @@
         catch (Exception)
         {
         }
-    }
-
-    private string GetHeartIcon(Guid productId)
-    {
-        return Products.FirstOrDefault(p => p.ProductId == productId)?.Wishlist == true ? "❤️" : "🤍";
     }
 
 }

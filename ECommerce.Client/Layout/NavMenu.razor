@@ -29,7 +29,7 @@
                             <NavLink href="/adminorders">Orders</NavLink>
                         </div>
                     </div>
-                    <NavLink class="navbar-option" href="/wishlist">Wishlist (@wishlistItemsCount)</NavLink>
+                    <NavLink class="navbar-option" href="/wishlist">Wishlist (@globalStateService.WishlistCountProperty)</NavLink>
                     <NavLink class="navbar-option shopping-cart" href="/cart">
                         @if (globalStateService.CartCountProperty > 0)
                         {
@@ -67,8 +67,11 @@
 
         wishlistItemsCount = allProducts.Count(product => product.Wishlist);
 
+        globalStateService.WishlistCountProperty = wishlistItemsCount;
+
         StateHasChanged();
     }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
