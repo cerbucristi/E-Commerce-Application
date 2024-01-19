@@ -12,11 +12,10 @@ using ECommerce.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ECommerce.API.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [EnableCors("Open")]
     public class ProductsController : ApiControllerBase
     {
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateProductCommand command)
@@ -29,6 +28,7 @@ namespace ECommerce.API.Controllers
             return Ok(result.Product);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
@@ -37,6 +37,7 @@ namespace ECommerce.API.Controllers
             return Ok(result.Products);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid id)
@@ -44,6 +45,8 @@ namespace ECommerce.API.Controllers
             var result = await Mediator.Send(new GetByIdProductQuery(id));
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,6 +57,8 @@ namespace ECommerce.API.Controllers
             await Mediator.Send(deleteProductCommand);
             return NoContent();
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

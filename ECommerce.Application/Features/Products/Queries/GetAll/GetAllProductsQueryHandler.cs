@@ -27,32 +27,56 @@ namespace ECommerce.Application.Features.Products.Queries.GetAll
             GetAllProductsResponse response = new();
             var productsResult = await productRepository.GetAllAsync();
             var categoriesResult = await categoryRepository.GetAllAsync();
-            var userIdString = currentUserService.GetCurrentUserId();
-            Guid userId = Guid.Parse(userIdString);
+            
 
             if (productsResult.IsSuccess && categoriesResult.IsSuccess)
             {
-                var wishlistItems = await wishlistRepository.GetByUserIdAsync(userId);
 
-                response.Products = productsResult.Value.Select(p =>
+                if (currentUserService.IsUserAuthorized())
                 {
-                    var category = categoriesResult.Value.First(category =>
-                        category.CategoryId.ToString() == p.CategoryId.ToString());
+                    var userIdString = currentUserService.GetCurrentUserId();
+                    Guid userId = Guid.Parse(userIdString);
+                    var wishlistItems = await wishlistRepository.GetByUserIdAsync(userId);
 
-                    var productDto = new ProductDto
+                    response.Products = productsResult.Value.Select(p =>
                     {
-                        ProductId = p.ProductId,
-                        ProductName = p.ProductName,
-                        Price = p.Price,
-                        CategoryName = category.CategoryName,
-                        CategoryId = category.CategoryId,
-                        ImageURL = p.ImageURL,
-                    };
+                        var category = categoriesResult.Value.First(category =>
+                            category.CategoryId.ToString() == p.CategoryId.ToString());
 
-                    productDto.Wishlist = wishlistItems.Value.Any(w => w.ProductId == p.ProductId);
+                        var productDto = new ProductDto
+                        {
+                            ProductId = p.ProductId,
+                            ProductName = p.ProductName,
+                            Price = p.Price,
+                            CategoryName = category.CategoryName,
+                            CategoryId = category.CategoryId,
+                            ImageURL = p.ImageURL,
+                        };
 
-                    return productDto;
-                }).ToList();
+                        productDto.Wishlist = wishlistItems.Value.Any(w => w.ProductId == p.ProductId);
+
+                        return productDto;
+                    }).ToList();
+      
+                } else
+                {
+                    response.Products = productsResult.Value.Select(p =>
+                    {
+                        var category = categoriesResult.Value.First(category =>
+                            category.CategoryId.ToString() == p.CategoryId.ToString());
+
+                        var productDto = new ProductDto
+                        {
+                            ProductId = p.ProductId,
+                            ProductName = p.ProductName,
+                            Price = p.Price,
+                            CategoryName = category.CategoryName,
+                            CategoryId = category.CategoryId,
+                            ImageURL = p.ImageURL,
+                        };
+                        return productDto;
+                    }).ToList();
+                }   
             }
             return response;
         }

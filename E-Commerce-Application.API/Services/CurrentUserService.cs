@@ -34,5 +34,16 @@ namespace WebAPI.Services
             var userEmailClaim = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email);
             return userEmailClaim?.Value;
         }
+
+        public bool IsUserAuthorized()
+        {
+            var user = httpContextAccessor.HttpContext?.User;
+
+            if (user == null || user?.Identity?.IsAuthenticated != true)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
