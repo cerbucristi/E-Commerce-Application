@@ -3,6 +3,8 @@
 @inject IOrderService OrderService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
+@inject NavigationManager navigationManager
+
 @using Blazored
 @using Blazored.Modal
 @using Blazored.Modal.Services
@@ -20,50 +22,85 @@
     }
 </style>
 
-<div class="login-container">
-
-    <header class="login-header">
-        <h1 class="login-header-title">Order</h1>
+<div class="order-container">
+    <header class="order-header">
+        <h1 class="order-header-title">Order</h1>
     </header>
+    <form
+        class="order-form"
+        method="post"
+        @onsubmit="SubmitForm">
+        <InputText
+            class="order-form-input"
+            placeholder="First Name"
+            @bind-Value="FirstName"/>
+        <InputText
+            class="order-form-input"
+            placeholder="Last Name"
+            @bind-Value="LastName"/>
+        <InputText
+            class="order-form-input"
+            placeholder="Address"
+            @bind-Value="Address"/>
+        <InputText
+            class="order-form-input"
+            placeholder="Phone Number"
+            @bind-Value="PhoneNumber"/>
+        <select
+            class="payment-select-form-input"
+            placeholder="Payment"
+            @bind="PaymentMethod">
+            <option value="" disabled selected>Select Payment Method</option>
+            <option>cash</option>
+            <option>card</option>
+        </select>
 
-    <form class="login-form" method="post">
-
-        <div class="form-group">
-            <label for="first-name">First Name<span class="mandatory"></span></label>
-            <input type="text" class="form-control login-form-input" id="first-name" @bind="FirstName" placeholder="Enter First Name" required />
-        </div>
-
-        <div class="form-group">
-            <label for="last-name">Last Name<span class="mandatory"></span></label>
-            <input type="text" class="form-control login-form-input" id="last-name" @bind="LastName" placeholder="Enter Last Name" required />
-        </div>
-
-        <div class="form-group">
-            <label for="address">Address<span class="mandatory"></span></label>
-            <input type="text" class="form-control login-form-input" id="address" @bind="Address" placeholder="Enter Address" required />
-        </div>
-
-        <div class="form-group">
-            <label for="phone">Phone<span class="mandatory"></span></label>
-            <input type="text" class="form-control login-form-input" id="phone" @bind="PhoneNumber" placeholder="Enter Phone" required />
-        </div>
-
-        <div class="form-group">
-            <label for="payment">Payment<span class="mandatory"></span></label>
-            <select class="form-control login-form-input" id="payment" @bind="PaymentMethod" required>
-                <option value="" disabled selected>Select Payment Method</option>
-                <option>cash</option>
-                <option>card</option>
-            </select>
-        </div>
-
-        <button type="button" class="btn btn-primary login-form-button" @onclick="SubmitForm">Submit</button>
-
+        <button class="order-form-button">Order</button>
     </form>
-
 </div>
 
-
+@* <div class="order-container"> *@
+@* *@
+@*     <header class="order-header"> *@
+@*         <h1 class="order-header-title">Order</h1> *@
+@*     </header> *@
+@* *@
+@*     <form class="order-form" method="post"> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label for="first-name">First Name<span class="mandatory"></span></label> *@
+@*             <input type="text" class="form-control order-form-input" id="first-name" @bind="FirstName" placeholder="Enter First Name" required/> *@
+@*         </div> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label for="last-name">Last Name<span class="mandatory"></span></label> *@
+@*             <input type="text" class="form-control order-form-input" id="last-name" @bind="LastName" placeholder="Enter Last Name" required/> *@
+@*         </div> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label for="address">Address<span class="mandatory"></span></label> *@
+@*             <input type="text" class="form-control order-form-input" id="address" @bind="Address" placeholder="Enter Address" required/> *@
+@*         </div> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label for="phone">Phone<span class="mandatory"></span></label> *@
+@*             <input type="text" class="form-control order-form-input" id="phone" @bind="PhoneNumber" placeholder="Enter Phone" required/> *@
+@*         </div> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label for="payment">Payment<span class="mandatory"></span></label> *@
+@*             <select class="form-control order-form-input" id="payment" @bind="PaymentMethod" required> *@
+@*                 <option value="" disabled selected>Select Payment Method</option> *@
+@*                 <option>cash</option> *@
+@*                 <option>card</option> *@
+@*             </select> *@
+@*         </div> *@
+@* *@
+@*         <button type="button" class="btn btn-primary order-form-button" @onclick="SubmitForm">Submit</button> *@
+@* *@
+@*     </form> *@
+@* *@
+@* </div> *@
 
 
 @code {
@@ -73,43 +110,46 @@
     private string PhoneNumber { get; set; }
     private string PaymentMethod { get; set; }
     private List<CartItemViewModel> cartItems = new List<CartItemViewModel>();
-    
+
     protected override async Task OnInitializedAsync()
     {
         cartItems = await ShoppingCartService.GetCartItems();
     }
+
     public async Task SubmitForm()
-    {       
+    {
         cartItems = await ShoppingCartService.GetCartItems();
-        
+
         decimal totalPrice = 0;
         foreach (var item in cartItems)
         {
             totalPrice += item.Price * item.Quantity;
         }
-        var order = new OrderViewModel
-            {
-                FirstName = FirstName,
-                LastName = LastName,
-                Address = Address,
-                PhoneNumber = PhoneNumber,
-                Payment = PaymentMethod,
-                OrderItems = cartItems.Select(item => new OrderItemViewModel
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.Price,
-                }).ToList(),
-                TotalPrice = totalPrice
-            };
 
-        
+        var order = new OrderViewModel
+        {
+            FirstName = FirstName,
+            LastName = LastName,
+            Address = Address,
+            PhoneNumber = PhoneNumber,
+            Payment = PaymentMethod,
+            OrderItems = cartItems.Select(item => new OrderItemViewModel
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                Price = item.Price,
+            }).ToList(),
+            TotalPrice = totalPrice
+        };
+
+
         var success = await OrderService.PlaceOrder(order);
 
-        
+
         if (success.IsSuccess)
         {
-            await ShoppingCartService.ClearCart();       
+            await ShoppingCartService.ClearCart();
+            RedirectToMyOrdersPage();
             /*await Task.Delay(5000);
             NavigationManager.NavigateTo("/", forceLoad: true);*/
         }
@@ -117,6 +157,8 @@
         {
             ToastService.ShowError("Failed to place the order. Please try again.");
         }
-
     }
+
+    private void RedirectToMyOrdersPage() => navigationManager.NavigateTo("/clientorders");
+
 }

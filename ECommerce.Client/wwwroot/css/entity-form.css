@@ -9,7 +9,7 @@
 
 .entity-form-container {
     align-items: center;
-    background: linear-gradient(180deg, #191c83, #7579ff);
+    background: linear-gradient(90deg, rgb(92, 151, 53), rgb(77, 79, 72));
     border-radius: 12px;
     display: flex;
     flex-direction: column;

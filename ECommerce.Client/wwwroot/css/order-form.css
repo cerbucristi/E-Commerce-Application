@@ -1,55 +1,57 @@
-﻿.login-container {
+﻿.order-container {
     align-items: center;
-    background: linear-gradient(180deg, rgb(92, 151, 53), rgb(77, 79, 72));
+    background: rgb(244, 246, 243);;
     border-radius: 12px;
+    border: 8px solid rgb(92, 151, 53);
     display: flex;
     flex-direction: column;
+    margin-top: 120px;
     padding: 48px;
     width: 500px;
 }
 
-.login-header {
+.order-header {
 }
 
-.login-header-title {
-    color: #fafafa;
+.order-header-title {
+    color: rgb(77, 79, 72);;
     font-size: 32px;
     text-transform: uppercase;
 }
 
-.login-form {
+.order-form {
     align-items: center;
     display: flex;
     flex-direction: column;
     width: 80%;
 }
 
-.login-form-input {
+.order-form-input {
     background-color: transparent;
-    border-bottom: 2px solid rgba(255,255,255,.24);
-    color: #fafafa;
+    border-bottom: 2px solid rgba(77,79,72,.24);
+    color: rgb(77, 79, 72);
     margin: 16px 0;
     padding: 8px;
     transition: all .8s;
     width: 100%;
 }
 
-    .login-form-input:focus {
-        border-bottom: 2px solid #fafafa;
+    .order-form-input:focus {
+        border-bottom: 2px solid rgb(77, 79, 72);;
     }
 
-        .login-form-input:focus::placeholder {
+        .order-form-input:focus::placeholder {
             color: transparent;
         }
 
-    .login-form-input::placeholder {
-        color: #fafafa;
+    .order-form-input::placeholder {
+        color: rgb(77, 79, 72);;
     }
 
-.login-form-button {
+.order-form-button {
     border: none;
     color: #555;
-    background-color: #fafafa;
+    background-color: rgb(198, 216, 192);;
     border-radius: 24px;
     font-size: 16px;
     font-weight: 500;
@@ -60,8 +62,9 @@
     width: 120px;
 }
 
-    .login-form-button:hover {
-        background-color: #99e7b6;
+    .order-form-button:hover {
+        background-color: rgb(92, 151, 53);
+        color: #fafafa;
     }
 
 .redirect-to-create-account {
@@ -70,4 +73,28 @@
     font-size: 12px;
     margin-top: 48px;
     text-align: center;
+}
+
+.payment-select-form-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(77,79,72,.24);
+    color: rgba(77,79,72);
+    margin: 16px 0;
+    padding: 8px;
+    transition: all .8s;
+    width: 100%;
+}
+
+.payment-select-form-input:focus {
+    border-bottom: 2px solid rgba(77,79,72);
+    outline: none;
+}
+
+.payment-select-form-input:focus::placeholder {
+    color: transparent;
+}
+
+.payment-select-form-input::placeholder {
+    color: #fafafa;
 }
