@@ -10,6 +10,7 @@
     justify-content: center;
     margin-bottom: 32px;
     max-height: 920px;
+    position: relative;
     width: 100vw;
 }
 
