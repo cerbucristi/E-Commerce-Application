@@ -38,7 +38,7 @@ namespace ECommerce.Application.Features.Orders.Commands.CreateOrder
 
             var userId = Guid.Parse(_currentUserService.GetCurrentUserId());
 
-            var order = Order.Create(userId, request.LastName, request.FirstName, request.PhoneNumber, request.Address, request.Payment, request.OrderItems);
+            var order = Order.Create(userId, request.LastName, request.FirstName, request.PhoneNumber, request.Address, request.Payment, request.OrderItems,request.TotalPrice);
 
             if (!order.IsSuccess)
             {

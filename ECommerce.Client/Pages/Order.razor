@@ -71,8 +71,7 @@
         cartItems = await ShoppingCartService.GetCartItems();
     }
     public async Task SubmitForm()
-    {
-        // Create an order object with the form data
+    {       
         cartItems = await ShoppingCartService.GetCartItems();
         
         decimal totalPrice = 0;
@@ -96,20 +95,15 @@
                 TotalPrice = totalPrice
             };
 
-        // Send the POST request to the server
+        
         var success = await OrderService.PlaceOrder(order);
 
-        // Show a toast message based on the result
+        
         if (success.IsSuccess)
         {
-            await ShoppingCartService.ClearCart();
-
-            // Show the success modal
-            
-
-            // Redirect to the home page after 5 seconds
-            await Task.Delay(5000);
-            NavigationManager.NavigateTo("/", forceLoad: true);
+            await ShoppingCartService.ClearCart();       
+            /*await Task.Delay(5000);
+            NavigationManager.NavigateTo("/", forceLoad: true);*/
         }
         else
         {
