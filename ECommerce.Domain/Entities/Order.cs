@@ -5,7 +5,7 @@ namespace ECommerce.Domain.Entities
 {
     public class Order : AuditableEntity
     {
-        private Order(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment)
+        private Order(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment, decimal totalPrice)
         {
             OrderId = Guid.NewGuid();
             CustomerId = customerId;
@@ -17,6 +17,7 @@ namespace ECommerce.Domain.Entities
             OrderStatus = "Pending";
             OrderItems =  new List<OrderItem>();
             Payment = payment;
+            TotalPrice = totalPrice;
         }
 
         public Guid OrderId { get; private set; }
@@ -32,7 +33,7 @@ namespace ECommerce.Domain.Entities
         public decimal TotalPrice { get; private set; }
 
 
-        public static Result<Order> Create(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment, List<OrderItem> orderItems)
+        public static Result<Order> Create(Guid customerId, string lastName, string firstName, string phoneNumber, string address, string payment, List<OrderItem> orderItems,decimal totalPrice)
         {
             if (customerId == Guid.Empty)
             {
@@ -51,7 +52,7 @@ namespace ECommerce.Domain.Entities
                 return Result<Order>.Failure("Address is required.");
             }
 
-            return Result<Order>.Success(new Order(customerId, lastName, firstName, phoneNumber, address, payment));
+            return Result<Order>.Success(new Order(customerId, lastName, firstName, phoneNumber, address, payment,totalPrice));
         }
 
         public void Update(string orderStatus)
